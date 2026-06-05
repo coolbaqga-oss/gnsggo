@@ -97,14 +97,145 @@
             <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85vh] animate-slide-up relative z-10">
                 <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-white rounded-t-3xl sm:rounded-2xl shrink-0">
                     <h2 class="text-lg font-bold text-gray-800">📅 전체 일정표</h2>
-                    <div class="flex items-center gap-2">
-                        <button onclick="loadTimetable(true)" class="text-xs font-bold text-[#5668d9] bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg transition">새로고침</button>
-                        <button onclick="closeTimetable()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
+                    <button onclick="closeTimetable()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
-                <div class="p-4 overflow-y-auto" id="timetable-content"></div>
+                <div class="p-4 overflow-y-auto" id="timetable-content">
+                  <div style="display:flex; flex-direction:column; gap:16px;">
+
+                    <!-- 금요일 -->
+                    <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                      <div style="background:#E1F5EE; padding:14px 16px; display:flex; align-items:baseline; gap:8px;">
+                        <span style="font-size:17px; font-weight:800; color:#085041;">금요일</span>
+                        <span style="font-size:14px; font-weight:700; color:#0F6E56;">7 / 24</span>
+                      </div>
+                      <div>
+                        <div style="display:flex; gap:12px; padding:12px 16px;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">06:30</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🚌 무학교회 집결</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">07:00<br>~ 09:00</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🛣️ 출발 · 신봉교회로 이동</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">09:00<br>~ 12:00</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🏫 어린이 성경학교 시작<br><span style="font-size:13px; font-weight:500; color:#9ca3af;">신봉교회 주관 · 개회 예배 및 공과 활동</span></span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">12:00</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🍚 점심식사 <span style="color:#9ca3af; font-size:12px; font-weight:500;">(신봉교회)</span></span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">13:00<br>~ 16:30</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🎨 중점 사역 1<br><span style="font-size:13px; font-weight:500; color:#9ca3af;">어린이 성경학교 오후 활동</span></span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">16:30<br>~ 18:30</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🍖 저녁식사 <span style="color:#9ca3af; font-size:12px; font-weight:500;">(바베큐 파티)</span></span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">18:30<br>~ 20:00</span>
+                          <span style="font-size:15px; font-weight:800; color:#0F6E56; line-height:1.5;">💬 나눔의 시간</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">20:00 ~</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🌙 휴식 및 취침</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 토요일 -->
+                    <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                      <div style="background:#EEEDFE; padding:14px 16px; display:flex; align-items:baseline; gap:8px;">
+                        <span style="font-size:17px; font-weight:800; color:#3C3489;">토요일</span>
+                        <span style="font-size:14px; font-weight:700; color:#534AB7;">7 / 25</span>
+                      </div>
+                      <div>
+                        <div style="display:flex; gap:12px; padding:12px 16px;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">07:00</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">☀️ 기상</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">08:00</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🍚 아침식사</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">09:00 ~</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🏫 어린이 성경학교 시작</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">09:00<br>~ 09:30</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🧸 유치부 접수</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">09:30 ~</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🧸 유치부 성경학교 시작</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">12:00</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🍚 점심식사</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">13:00 ~</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🎪 해피랜드<br><span style="font-size:13px; font-weight:500; color:#9ca3af;">에어바운스 · 달란트 시장 · 인생네컷 · 간식</span></span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">17:00</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🍚 저녁식사</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">18:30</span>
+                          <span style="font-size:15px; font-weight:800; color:#534AB7; line-height:1.5;">⛪️ 찬양집회<br><span style="font-size:13px; font-weight:600; color:#4b5563;">Wellside · 박종훈 전도사</span></span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">22:00</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🌙 휴식 및 취침</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 주일 -->
+                    <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                      <div style="background:#FAECE7; padding:14px 16px; display:flex; align-items:baseline; gap:8px;">
+                        <span style="font-size:17px; font-weight:800; color:#712B13;">주일</span>
+                        <span style="font-size:14px; font-weight:700; color:#993C1D;">7 / 26</span>
+                      </div>
+                      <div>
+                        <div style="display:flex; gap:12px; padding:12px 16px;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">07:00</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">☀️ 기상</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">08:00</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🍚 아침식사</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">10:00</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🧳 체크아웃 및 정리</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">11:00</span>
+                          <span style="font-size:15px; font-weight:800; color:#993C1D; line-height:1.5;">⛪️ 주일 예배 <span style="font-size:12px; font-weight:600; color:#9ca3af;">(신봉교회)</span></span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">12:00</span>
+                          <span style="font-size:15px; font-weight:700; color:#1f2937; line-height:1.5;">🍚 점심식사</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">13:00</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🚌 서울로 이동</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">18:00 ~</span>
+                          <span style="font-size:15px; font-weight:600; color:#1f2937; line-height:1.5;">🏠 도착 · 짐정리 및 해산</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
             </div>
         </div>
 
@@ -114,14 +245,88 @@
             <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85vh] animate-slide-up relative z-10">
                 <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-white rounded-t-3xl sm:rounded-2xl shrink-0">
                     <h2 class="text-lg font-bold text-gray-800">📋 선교 안내</h2>
-                    <div class="flex items-center gap-2">
-                        <button onclick="loadInfo(true)" class="text-xs font-bold text-[#5668d9] bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg transition">새로고침</button>
-                        <button onclick="closeInfo()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                        </button>
-                    </div>
+                    <button onclick="closeInfo()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
                 </div>
-                <div class="p-4 overflow-y-auto" id="info-content"></div>
+                <div class="p-4 overflow-y-auto" id="info-content">
+                  <div style="display:flex; flex-direction:column; gap:16px;">
+
+                    <!-- 개요 -->
+                    <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                      <div style="background:#5668d9; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">📌 개요</span></div>
+                      <div>
+                        <div style="display:flex; gap:12px; padding:12px 16px;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">주제</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">용서받고 사랑하고, 고고 대모험! (엡 4:31–32)</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">일정</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">7/24–26 (금–일)</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">장소</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">신봉교회 (상주)</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">참여 인원</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">청년 30명 · 교구 15명</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">대상 인원</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">약 200명 (아기학교 35 · 어린이 45 · 다문화가정 100+)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 조직 -->
+                    <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                      <div style="background:#5668d9; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">👥 조직</span></div>
+                      <div>
+                        <div style="display:flex; gap:12px; padding:12px 16px;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">지도</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">정일균 목사 · 박종훈 전도사</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">사역팀장</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">이서하 · 김미라</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">회계</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">이현정(정) · 최지나(부)</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">청년선교팀장</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">미정</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 사역 -->
+                    <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                      <div style="background:#5668d9; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">🎯 사역</span></div>
+                      <div>
+                        <div style="display:flex; gap:12px; padding:12px 16px;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">유치부 성경학교</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">1–7세 대상 · 아기학교 병행</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">어린이 성경학교</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">8–13세 대상</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">해피랜드</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">에어바운스 · 달란트시장 · 인생네컷 · 간식부스</span>
+                        </div>
+                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
+                          <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">찬양집회</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">무학·신봉·인근 자립대상교회 아이들과 함께</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
             </div>
         </div>
 
@@ -157,9 +362,9 @@
         /* ===================== 모달 열고 닫기 ===================== */
         function showModal(id){ const m = document.getElementById(id); m.classList.remove('hidden'); m.classList.add('flex'); }
         function hideModal(id){ const m = document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); }
-        function openTimetable(){ showModal('timetableModal'); if(!timetableLoaded) loadTimetable(); }
+        function openTimetable(){ showModal('timetableModal'); }
         function closeTimetable(){ hideModal('timetableModal'); }
-        function openInfo(){ showModal('infoModal'); if(!infoLoaded) loadInfo(); }
+        function openInfo(){ showModal('infoModal'); }
         function closeInfo(){ hideModal('infoModal'); }
 
         /* ===================== 타임테이블 ===================== */

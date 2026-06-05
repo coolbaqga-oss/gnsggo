@@ -547,6 +547,7 @@
             headers.forEach((h, i) => {
                 if(!h) return; h = h.trim();
                 if(h.includes("이름")) headerMap[i] = "이름";
+                else if(h.includes("사진") || h.includes("이미지") || h.toLowerCase().includes("photo")) headerMap[i] = "사진";
                 else if(h.includes("사이즈") || h.includes("단체티")) headerMap[i] = "단체티 사이즈";
                 else if(h.includes("입금") || h.includes("결제") || h.includes("참가비")) headerMap[i] = "입금확인";
                 else if(h.includes("조 편성") || h === "조" || h.includes("부서")) headerMap[i] = "조 편성";
@@ -592,6 +593,36 @@
                 });
             }
             renderList(filtered);
+        }
+
+        // 사진 주소 정리 (구글 드라이브 공유 링크 → 표시용 썸네일로 변환)
+        function photoUrl(raw){
+            if(!raw) return '';
+            raw = ('' + raw).trim();
+            if(!raw) return '';
+            let m = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+            if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
+            if(raw.includes('drive.google.com')){
+                m = raw.match(/[?&]id=([^&]+)/);
+                if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
+            }
+            return raw; // 일반 이미지 주소 또는 photos/이름.jpg 같은 상대경로
+        }
+
+        // 사진이 없거나 안 열릴 때 쓰는 이니셜 동그라미
+        const AVATAR_COLORS = ['bg-blue-100 text-blue-700','bg-purple-100 text-purple-700','bg-pink-100 text-pink-700','bg-orange-100 text-orange-700','bg-green-100 text-green-700','bg-teal-100 text-teal-700'];
+        function initialsAvatar(name){
+            const ch = ((name || '?').trim().charAt(0)) || '?';
+            let h = 0; for(const c of (name || '')) h = (h + c.charCodeAt(0)) % AVATAR_COLORS.length;
+            return `<div class="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold ${AVATAR_COLORS[h]} shrink-0 shadow-sm">${escapeHtml(ch)}</div>`;
+        }
+        function avatarHTML(p){
+            const url = photoUrl(p["사진"]);
+            if(url){
+                const fallback = initialsAvatar(p["이름"]).replace(/"/g, '&quot;');
+                return `<img src="${escapeHtml(url)}" alt="${escapeHtml(p["이름"])}" referrerpolicy="no-referrer" class="w-11 h-11 rounded-full object-cover shrink-0 border border-gray-200 bg-gray-100" onerror="this.onerror=null;this.outerHTML='${fallback}'">`;
+            }
+            return initialsAvatar(p["이름"]);
         }
 
         function renderList(data) {
@@ -648,11 +679,14 @@
 
                 card.className = cardStyle;
                 card.innerHTML = `
-                    <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                        <div class="flex items-center flex-wrap gap-1.5">
-                            <span class="${nameStyle}">${p["이름"]}</span>
-                            ${leaderBadge}
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-md ${groupColor}">${groupBadge}</span>
+                    <div class="flex justify-between items-start border-b border-gray-100 pb-2 gap-2">
+                        <div class="flex items-center gap-3 min-w-0">
+                            ${avatarHTML(p)}
+                            <div class="flex items-center flex-wrap gap-1.5 min-w-0">
+                                <span class="${nameStyle}">${p["이름"]}</span>
+                                ${leaderBadge}
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded-md ${groupColor}">${groupBadge}</span>
+                            </div>
                         </div>
                         ${payBadgeHTML}
                     </div>

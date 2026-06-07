@@ -397,6 +397,14 @@
             ]
         };
 
+        /* =========================================================
+           3) 얼굴 사진 — 시트 "사진" 열을 안 써도, 여기 적으면 뜹니다.
+           "이름": "사진경로" 형태로 추가하세요. (시트에 값이 있으면 시트가 우선)
+        ========================================================= */
+        const FACE_PHOTOS = {
+            "곽미경": "photos/kwak.jpg"
+        };
+
         let participantsData = [];
         let currentCategory = '전체';
         let timetableLoaded = false;
@@ -708,7 +716,8 @@
             return `<div class="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold ${AVATAR_COLORS[h]} shrink-0 shadow-sm">${escapeHtml(ch)}</div>`;
         }
         function avatarHTML(p){
-            const url = photoUrl(p["사진"]);
+            const raw = p["사진"] || FACE_PHOTOS[(p["이름"] || "").trim()] || "";
+            const url = photoUrl(raw);
             if(url){
                 const fallback = initialsAvatar(p["이름"]).replace(/"/g, '&quot;');
                 return `<img src="${escapeHtml(url)}" alt="${escapeHtml(p["이름"])}" referrerpolicy="no-referrer" class="w-11 h-11 rounded-full object-cover shrink-0 border border-gray-200 bg-gray-100" onerror="this.onerror=null;this.outerHTML='${fallback}'">`;

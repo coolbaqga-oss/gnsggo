@@ -307,6 +307,7 @@
                           <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">지도</span>
                           <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">정일균 목사 · 박종훈 전도사</span>
                         </div>
+                          <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
                           <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">청년선교팀장</span>
                           <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">박은정</span>
                         </div>
@@ -317,10 +318,7 @@
                         <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;">
                           <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">회계</span>
                           <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">이현정(정) · 최지나(부)</span>
-                        </div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
-                        
-                        </div>
+                        </div> 
                       </div>
                     </div>
 
@@ -670,6 +668,7 @@
                 else if(h.includes("입금") || h.includes("결제") || h.includes("참가비")) headerMap[i] = "입금확인";
                 else if(h.includes("조 편성") || h === "조" || h.includes("부서")) headerMap[i] = "조 편성";
                 else if(h.includes("비고")) headerMap[i] = "비고";
+                else if(h.includes("기도")) headerMap[i] = "기도제목";
             });
             participantsData = rawData.slice(headerIndex + 1).map(row => {
                 let obj = {};
@@ -794,11 +793,12 @@
                 } else { payStatus = "미납"; }
                 let payBadgeHTML = showExtraInfo ? `<span class="text-xs font-bold px-3 py-1.5 rounded-full ${payBadgeColor} shrink-0">입금: ${payStatus}</span>` : '';
 
-                // 단체티 사이즈 (전체 탭에서만)
-                let tshirtHTML = showExtraInfo && p["단체티 사이즈"] ? `
-                    <div class="flex items-center gap-1.5 mt-2.5 text-sm text-gray-600">
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        티셔츠: <span class="font-semibold text-gray-700">${p["단체티 사이즈"]}</span>
+                // 기도제목 (모든 탭에서 표시)
+                let prayerText = (p["기도제목"] || "").trim();
+                let prayerHTML = prayerText ? `
+                    <div class="mt-2.5 bg-indigo-50 border-l-4 border-indigo-300 rounded-r-lg p-3">
+                        <div class="text-xs font-bold text-indigo-500 mb-1">🙏 기도제목</div>
+                        <div class="text-sm text-gray-700 leading-relaxed" style="white-space: pre-line;">${escapeHtml(prayerText)}</div>
                     </div>` : '';
 
                 // 비고
@@ -817,7 +817,7 @@
                         </div>
                         ${payBadgeHTML}
                     </div>
-                    ${tshirtHTML}
+                    ${prayerHTML}
                     ${bigoHTML}
                 `;
                 list.appendChild(card);

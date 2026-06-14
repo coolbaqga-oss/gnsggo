@@ -419,11 +419,11 @@
            "이름": "사진경로" 형태로 추가하세요. (시트에 값이 있으면 시트가 우선)
         ========================================================= */
         const FACE_PHOTOS = {
-            "곽미경": "photos/kwak.png"
-            "박근종": "photos/gnjong.png"   
-            "최지나": "photos/jina.png"
-            "이서하": "photos/seoha.png"
-            "오주항": "photos/juhang.png"
+            "곽미경": "photos/kwak.jpg"
+            "박근종": "photos/gnjong.jpg"   
+            "최지나": "photos/jina.jpg"
+            "이서하": "photos/seoha.jpg"
+            "오주항": "photos/juhang.jpg"
         };
 
         let participantsData = [];
@@ -728,7 +728,7 @@
                 m = raw.match(/[?&]id=([^&]+)/);
                 if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
             }
-            return raw; // 일반 이미지 주소 또는 photos/이름.png 같은 상대경로
+            return raw; // 일반 이미지 주소 또는 photos/이름.jpg 같은 상대경로
         }
 
         // 사진이 없거나 안 열릴 때 쓰는 이니셜 동그라미

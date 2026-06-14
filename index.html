@@ -86,9 +86,10 @@
             </div>
 
             <div class="flex px-2 pt-2 bg-black/5">
-                <button id="tab-전체" class="flex-1 py-2.5 text-sm font-bold bg-white text-[#5668d9] rounded-t-lg transition shadow-sm" onclick="setTab('전체')">전체</button>
-                <button id="tab-유치부" class="flex-1 py-2.5 text-sm font-bold text-white/80 hover:text-white transition" onclick="setTab('유치부')">유치부</button>
-                <button id="tab-어린이부" class="flex-1 py-2.5 text-sm font-bold text-white/80 hover:text-white transition" onclick="setTab('어린이부')">어린이부</button>
+                <button id="tab-전체" class="flex-1 py-2.5 text-[13px] font-bold bg-white text-[#5668d9] rounded-t-lg transition shadow-sm whitespace-nowrap" onclick="setTab('전체')">전체</button>
+                <button id="tab-사역지원팀" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap" onclick="setTab('사역지원팀')">사역지원팀</button>
+                <button id="tab-유치부" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap" onclick="setTab('유치부')">유치부</button>
+                <button id="tab-어린이부" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap" onclick="setTab('어린이부')">어린이부</button>
             </div>
         </header>
 
@@ -688,9 +689,9 @@
 
         function setTab(cat) {
             currentCategory = cat;
-            ['전체', '유치부', '어린이부'].forEach(t => {
+            ['전체', '사역지원팀', '유치부', '어린이부'].forEach(t => {
                 const el = document.getElementById('tab-' + t);
-                el.className = (t === cat) ? "flex-1 py-2.5 text-sm font-bold bg-white text-[#5668d9] rounded-t-lg shadow-sm" : "flex-1 py-2.5 text-sm font-bold text-white/80";
+                el.className = (t === cat) ? "flex-1 py-2.5 text-[13px] font-bold bg-white text-[#5668d9] rounded-t-lg shadow-sm whitespace-nowrap" : "flex-1 py-2.5 text-[13px] font-bold text-white/80 whitespace-nowrap";
             });
             filterList();
         }
@@ -777,6 +778,7 @@
                 let groupBadge = p["조 편성"] || '미배정';
                 let groupColor = "bg-blue-50 text-blue-600 border border-blue-100";
                 if(groupBadge.includes("회계")) groupColor = "bg-purple-50 text-purple-600 border border-purple-100";
+                else if(groupBadge.includes("사역지원")) groupColor = "bg-teal-50 text-teal-600 border border-teal-100";
                 else if(groupBadge.includes("유치부")) groupColor = "bg-pink-50 text-pink-600 border border-pink-100";
                 else if(groupBadge.includes("어린이부")) groupColor = "bg-orange-50 text-orange-600 border border-orange-100";
 

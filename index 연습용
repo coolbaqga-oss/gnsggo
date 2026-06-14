@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>2026 7공동체 국내선교</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,8 @@
             max-width: 480px;
             margin: 0 auto;
             background-color: #ffffff;
-            min-height: 100vh;
+            height: 100vh;       /* 미지원 브라우저 대비 기본값 */
+            height: 100dvh;      /* 모바일 주소창/홈바를 반영한 실제 보이는 높이 */
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
             position: relative;
         }
@@ -43,9 +44,9 @@
     </style>
 </head>
 <body>
-    <div class="app-container flex flex-col h-screen overflow-hidden">
+    <div class="app-container flex flex-col overflow-hidden">
 
-        <header class="bg-[#5668d9] text-white pt-4 sticky top-0 z-10 shadow-md shrink-0">
+        <header class="bg-[#5668d9] text-white pt-4 sticky top-0 z-10 shadow-md shrink-0" style="padding-top: calc(1rem + env(safe-area-inset-top, 0px));">
             <div class="px-4">
                 <div class="flex items-center gap-3 mb-4">
                     <img src="logo.jpeg" alt="로고" class="app-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/42/ffffff/5668d9?text=Logo';">
@@ -81,20 +82,23 @@
             <div id="data-list" class="flex flex-col gap-3"></div>
         </main>
 
-        <!-- 하단 고정 버튼: 안내 + 일정표 -->
-        <div class="bg-white border-t border-gray-200 p-3 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10 flex gap-2">
-            <button onclick="openInfo()" class="flex-1 bg-white border-2 border-gray-800 hover:bg-gray-50 text-gray-800 font-extrabold py-3.5 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-base">
-                <span class="text-xl">📋</span> 선교 안내
+        <!-- 하단 고정 버튼: 안내 + 일정표 + 숙소 -->
+        <div class="bg-white border-t border-gray-200 p-3 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10 grid grid-cols-3 gap-2" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));">
+            <button onclick="openInfo()" class="bg-white border-2 border-gray-800 hover:bg-gray-50 text-gray-800 font-bold py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 text-sm">
+                <span class="text-lg">📋</span> 안내
             </button>
-            <button onclick="openTimetable()" class="flex-1 bg-gray-800 hover:bg-black text-white font-extrabold py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base">
-                <span class="text-xl">📅</span> 전체 일정표
+            <button onclick="openTimetable()" class="bg-gray-800 hover:bg-black text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-sm">
+                <span class="text-lg">📅</span> 일정표
+            </button>
+            <button onclick="openLodging()" class="bg-[#5668d9] hover:bg-[#4555c7] text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-sm">
+                <span class="text-lg">🏠</span> 숙소
             </button>
         </div>
 
         <!-- 일정표 모달 -->
         <div id="timetableModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
             <div class="absolute inset-0" onclick="closeTimetable()"></div>
-            <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85vh] animate-slide-up relative z-10">
+            <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85dvh] animate-slide-up relative z-10">
                 <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-white rounded-t-3xl sm:rounded-2xl shrink-0">
                     <h2 class="text-lg font-bold text-gray-800">📅 전체 일정표</h2>
                     <button onclick="closeTimetable()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
@@ -242,7 +246,7 @@
         <!-- 선교 안내 모달 -->
         <div id="infoModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
             <div class="absolute inset-0" onclick="closeInfo()"></div>
-            <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85vh] animate-slide-up relative z-10">
+            <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85dvh] animate-slide-up relative z-10">
                 <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-white rounded-t-3xl sm:rounded-2xl shrink-0">
                     <h2 class="text-lg font-bold text-gray-800">📋 선교 안내</h2>
                     <button onclick="closeInfo()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
@@ -330,6 +334,28 @@
             </div>
         </div>
 
+        <!-- 숙소 모달 -->
+        <div id="lodgingModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
+            <div class="absolute inset-0" onclick="closeLodging()"></div>
+            <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85dvh] animate-slide-up relative z-10">
+                <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-white rounded-t-3xl sm:rounded-2xl shrink-0">
+                    <h2 class="text-lg font-bold text-gray-800">🏠 숙소</h2>
+                    <button onclick="closeLodging()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-4 overflow-y-auto" id="lodging-content"></div>
+            </div>
+        </div>
+
+        <!-- 사진 크게 보기 -->
+        <div id="photoLightbox" class="fixed inset-0 bg-black/90 z-[60] hidden items-center justify-center p-4" onclick="closePhoto()">
+            <button class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 rounded-full p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85dvh] rounded-xl shadow-2xl object-contain">
+        </div>
+
     </div>
 
     <script>
@@ -350,6 +376,36 @@
         }
         const GOOGLE_SHEET_CSV_URL = csvUrl(ROSTER_GID);
 
+        /* =========================================================
+           2) 숙소 사진 — 여기에 방 사진을 추가하세요.
+           방 종류별로 { src: "사진경로", label: "방 이름" } 을 늘리면 됩니다.
+           · src  : photos/rooms/4-1.jpg 처럼 같은 폴더 경로, 또는 인터넷/드라이브 주소
+           · label: 카드 아래 설명 (예: "4인실 ①", "남자방", 배정 인원 등)
+           사진이 없거나 안 열리면 회색 '사진 준비중' 칸이 대신 표시됩니다.
+        ========================================================= */
+        const LODGING = {
+            "4인실": [
+                { src: "photos/Rooms/4-1.jpeg", label: "4인실 ①" },
+                { src: "photos/Rooms/4-2.jpeg", label: "4인실 ②" }
+            ],
+            "6인실": [
+                { src: "photos/Rooms/6-1.jpeg", label: "6인실 ①" },
+                { src: "photos/Rooms/6-2.jpeg", label: "6인실 ②" }
+            ],
+            "기타 시설": [
+                { src: "photos/Rooms/lecture.jpg", label: "강의실" },
+                { src: "photos/Rooms/pool.jpg", label: "수영장" }
+            ]
+        };
+
+        /* =========================================================
+           3) 얼굴 사진 — 시트 "사진" 열을 안 써도, 여기 적으면 뜹니다.
+           "이름": "사진경로" 형태로 추가하세요. (시트에 값이 있으면 시트가 우선)
+        ========================================================= */
+        const FACE_PHOTOS = {
+            "곽미경": "photos/kwak.jpg"
+        };
+
         let participantsData = [];
         let currentCategory = '전체';
         let timetableLoaded = false;
@@ -366,6 +422,50 @@
         function closeTimetable(){ hideModal('timetableModal'); }
         function openInfo(){ showModal('infoModal'); }
         function closeInfo(){ hideModal('infoModal'); }
+        function openLodging(){ showModal('lodgingModal'); renderLodging(); }
+        function closeLodging(){ hideModal('lodgingModal'); }
+
+        /* ===================== 사진 크게 보기 ===================== */
+        function openPhoto(src){
+            const box = document.getElementById('photoLightbox');
+            document.getElementById('lightbox-img').src = src;
+            box.classList.remove('hidden'); box.classList.add('flex');
+        }
+        function closePhoto(){
+            const box = document.getElementById('photoLightbox');
+            box.classList.add('hidden'); box.classList.remove('flex');
+            document.getElementById('lightbox-img').src = '';
+        }
+
+        /* ===================== 숙소 ===================== */
+        function renderLodging(){
+            const c = document.getElementById('lodging-content');
+            const types = Object.keys(LODGING || {});
+            if(!types.length){ c.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">등록된 숙소 사진이 없습니다.</p>'; return; }
+            let html = '<div style="display:flex; flex-direction:column; gap:16px;">';
+            types.forEach(type => {
+                const rooms = LODGING[type] || [];
+                html += `<div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
+                html += `<div style="background:#5668d9; padding:12px 16px; display:flex; align-items:center; justify-content:space-between;">
+                    <span style="font-size:16px; font-weight:800; color:#fff;">🛏️ ${escapeHtml(type)}</span>
+                    <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${rooms.length}개</span></div>`;
+                html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:12px;">';
+                rooms.forEach(room => {
+                    const url = photoUrl(room.src);
+                    const ph = "this.onerror=null;this.parentElement.innerHTML='<div style=\\'width:100%;height:120px;display:flex;align-items:center;justify-content:center;background:#f1f3f5;color:#9ca3af;font-size:13px;font-weight:600;\\'>사진 준비중</div>'";
+                    const img = url
+                        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(room.label||'')}" referrerpolicy="no-referrer" onclick="openPhoto('${escapeHtml(url)}')" onerror="${ph}" style="width:100%; height:120px; object-fit:cover; display:block; cursor:pointer;">`
+                        : `<div style="width:100%; height:120px; display:flex; align-items:center; justify-content:center; background:#f1f3f5; color:#9ca3af; font-size:13px; font-weight:600;">사진 준비중</div>`;
+                    html += `<div style="border:1px solid #e5e7eb; border-radius:0.6rem; overflow:hidden; background:#fff;">
+                        ${img}
+                        ${room.label ? `<div style="padding:8px 10px; font-size:13px; font-weight:600; color:#374151; text-align:center;">${escapeHtml(room.label)}</div>` : ''}
+                    </div>`;
+                });
+                html += '</div></div>';
+            });
+            html += '</div>';
+            c.innerHTML = html;
+        }
 
         /* ===================== 타임테이블 ===================== */
         const DAY_THEME = {
@@ -547,6 +647,7 @@
             headers.forEach((h, i) => {
                 if(!h) return; h = h.trim();
                 if(h.includes("이름")) headerMap[i] = "이름";
+                else if(h.includes("사진") || h.includes("이미지") || h.toLowerCase().includes("photo")) headerMap[i] = "사진";
                 else if(h.includes("사이즈") || h.includes("단체티")) headerMap[i] = "단체티 사이즈";
                 else if(h.includes("입금") || h.includes("결제") || h.includes("참가비")) headerMap[i] = "입금확인";
                 else if(h.includes("조 편성") || h === "조" || h.includes("부서")) headerMap[i] = "조 편성";
@@ -592,6 +693,37 @@
                 });
             }
             renderList(filtered);
+        }
+
+        // 사진 주소 정리 (구글 드라이브 공유 링크 → 표시용 썸네일로 변환)
+        function photoUrl(raw){
+            if(!raw) return '';
+            raw = ('' + raw).trim();
+            if(!raw) return '';
+            let m = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+            if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
+            if(raw.includes('drive.google.com')){
+                m = raw.match(/[?&]id=([^&]+)/);
+                if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
+            }
+            return raw; // 일반 이미지 주소 또는 photos/이름.jpg 같은 상대경로
+        }
+
+        // 사진이 없거나 안 열릴 때 쓰는 이니셜 동그라미
+        const AVATAR_COLORS = ['bg-blue-100 text-blue-700','bg-purple-100 text-purple-700','bg-pink-100 text-pink-700','bg-orange-100 text-orange-700','bg-green-100 text-green-700','bg-teal-100 text-teal-700'];
+        function initialsAvatar(name){
+            const ch = ((name || '?').trim().charAt(0)) || '?';
+            let h = 0; for(const c of (name || '')) h = (h + c.charCodeAt(0)) % AVATAR_COLORS.length;
+            return `<div class="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold ${AVATAR_COLORS[h]} shrink-0 shadow-sm">${escapeHtml(ch)}</div>`;
+        }
+        function avatarHTML(p){
+            const raw = p["사진"] || FACE_PHOTOS[(p["이름"] || "").trim()] || "";
+            const url = photoUrl(raw);
+            if(url){
+                const fallback = initialsAvatar(p["이름"]).replace(/"/g, '&quot;');
+                return `<img src="${escapeHtml(url)}" alt="${escapeHtml(p["이름"])}" referrerpolicy="no-referrer" class="w-11 h-11 rounded-full object-cover shrink-0 border border-gray-200 bg-gray-100" onerror="this.onerror=null;this.outerHTML='${fallback}'">`;
+            }
+            return initialsAvatar(p["이름"]);
         }
 
         function renderList(data) {
@@ -648,11 +780,14 @@
 
                 card.className = cardStyle;
                 card.innerHTML = `
-                    <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-                        <div class="flex items-center flex-wrap gap-1.5">
-                            <span class="${nameStyle}">${p["이름"]}</span>
-                            ${leaderBadge}
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-md ${groupColor}">${groupBadge}</span>
+                    <div class="flex justify-between items-start border-b border-gray-100 pb-2 gap-2">
+                        <div class="flex items-center gap-3 min-w-0">
+                            ${avatarHTML(p)}
+                            <div class="flex items-center flex-wrap gap-1.5 min-w-0">
+                                <span class="${nameStyle}">${p["이름"]}</span>
+                                ${leaderBadge}
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded-md ${groupColor}">${groupBadge}</span>
+                            </div>
                         </div>
                         ${payBadgeHTML}
                     </div>

@@ -728,7 +728,7 @@
                 m = raw.match(/[?&]id=([^&]+)/);
                 if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
             }
-            return raw; // 일반 이미지 주소 또는 photos/이름.jpg 같은 상대경로
+            return raw; // 일반 이미지 주소 또는 photos/이름.png 같은 상대경로
         }
 
         // 사진이 없거나 안 열릴 때 쓰는 이니셜 동그라미

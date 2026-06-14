@@ -36,6 +36,22 @@
             to { transform: translateY(0); opacity: 1; }
         }
         .animate-slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* 선교팀장용 화려한 금빛 왕관 배지 */
+        @keyframes crownGlow {
+            0%, 100% { box-shadow: 0 0 6px rgba(245,158,11,.55), 0 0 12px rgba(234,179,8,.35); }
+            50%      { box-shadow: 0 0 16px rgba(245,158,11,.95), 0 0 28px rgba(234,179,8,.7); }
+        }
+        @keyframes crownShimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .crown-badge {
+            background: linear-gradient(120deg, #fde047, #f59e0b, #fbbf24, #eab308, #fde047);
+            background-size: 220% 220%;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(120,53,15,.45);
+            border: 1px solid rgba(255,255,255,.6);
+            animation: crownGlow 1.6s ease-in-out infinite, crownShimmer 3.5s linear infinite;
+        }
+        .crown-card { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 55%, #fde68a 100%); }
         .app-logo {
             width: 42px; height: 42px; border-radius: 50%;
             background-color: white; object-fit: contain; padding: 3px;
@@ -301,7 +317,7 @@
                         </div>
                         <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;">
                           <span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">청년선교팀장</span>
-                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">미정</span>
+                          <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">박은정</span>
                         </div>
                       </div>
                     </div>
@@ -393,8 +409,8 @@
                 { src: "photos/Rooms/6-2.jpeg", label: "6인실 ②" }
             ],
             "기타 시설": [
-                { src: "photos/Rooms/lecture.jpg", label: "강의실" },
-                { src: "photos/Rooms/pool.jpg", label: "수영장" }
+                { src: "photos/Rooms/lecture.jpeg", label: "강의실" },
+                { src: "photos/Rooms/pool.jpeg", label: "수영장" }
             ]
         };
 
@@ -743,7 +759,11 @@
                 let nameStyle = "font-bold text-lg text-gray-800";
                 let leaderBadge = "";
 
-                if (p["이름"] === "김미라") {
+                if (p["이름"] === "박은정") {
+                    cardStyle = "crown-card p-4 rounded-xl shadow-lg border-2 border-amber-400 ring-2 ring-amber-300/50 relative overflow-hidden";
+                    nameStyle = "font-extrabold text-xl text-amber-900";
+                    leaderBadge = `<span class="crown-badge text-sm font-extrabold px-3 py-1 rounded-full ml-1.5 inline-flex items-center gap-1 whitespace-nowrap"><span class="text-lg leading-none">👑</span> 선교팀장 <span class="text-lg leading-none">👑</span></span>`;
+                } else if (p["이름"] === "김미라") {
                     cardStyle = "bg-orange-50 p-4 rounded-lg shadow-md border-2 border-orange-400 relative overflow-hidden";
                     nameStyle = "font-bold text-lg text-orange-900";
                     leaderBadge = `<span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-sm ml-1 animate-pulse">👑 어린이부 팀장</span>`;

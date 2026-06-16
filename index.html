@@ -400,6 +400,10 @@
            사진이 없거나 안 열리면 회색 '사진 준비중' 칸이 대신 표시됩니다.
         ========================================================= */
         const LODGING = {
+            const ROOM_COUNT = {
+            "4인실": "11개 대여",
+            "6인실": "8개 대여"
+        };
             "4인실": [
                 { src: "photos/Rooms/4-1.jpeg", label: "4인실 ①" },
                 { src: "photos/Rooms/4-2.jpeg", label: "4인실 화장실" }
@@ -444,6 +448,7 @@
             "구윤경": "photos/yunkyung.png",
             "강이연": "photos/eyun.png",
             "정경일": "photos/koungil.png",
+            "박종훈 전도사": "photos/.jonghoon.png",
 
         };
 
@@ -489,7 +494,7 @@
                 html += `<div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
                 html += `<div style="background:#5668d9; padding:12px 16px; display:flex; align-items:center; justify-content:space-between;">
                     <span style="font-size:16px; font-weight:800; color:#fff;">🛏️ ${escapeHtml(type)}</span>
-                    <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${rooms.length}개</span></div>`;
+                    <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${ROOM_COUNT[type] || rooms.length + '장'}</span></div>`;
                 html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:12px;">';
                 rooms.forEach(room => {
                     const url = photoUrl(room.src);

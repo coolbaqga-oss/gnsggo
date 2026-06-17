@@ -15,8 +15,8 @@
             max-width: 480px;
             margin: 0 auto;
             background-color: #ffffff;
-            height: 100vh;       /* 미지원 브라우저 대비 기본값 */
-            height: 100dvh;      /* 모바일 주소창/홈바를 반영한 실제 보이는 높이 */
+            height: 100vh;
+            height: 100dvh;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
             position: relative;
         }
@@ -84,11 +84,11 @@
                 </div>
             </div>
 
-            <div class="flex px-2 pt-2 bg-black/5">
-                <button id="tab-전체" class="flex-1 py-2.5 text-[13px] font-bold bg-white text-[#5668d9] rounded-t-lg transition shadow-sm whitespace-nowrap" onclick="setTab('전체')">전체</button>
-                <button id="tab-사역지원팀" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap" onclick="setTab('사역지원팀')">사역지원팀</button>
-                <button id="tab-유치부" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap" onclick="setTab('유치부')">유치부</button>
-                <button id="tab-어린이부" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap" onclick="setTab('어린이부')">어린이부</button>
+            <div class="flex px-2 pt-2 bg-black/5 overflow-x-auto" style="-webkit-overflow-scrolling: touch;">
+                <button id="tab-전체" class="flex-1 py-2.5 text-[13px] font-bold bg-white text-[#5668d9] rounded-t-lg transition shadow-sm whitespace-nowrap px-3" onclick="setTab('전체')">전체</button>
+                <button id="tab-사역지원팀" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap px-3" onclick="setTab('사역지원팀')">사역지원팀</button>
+                <button id="tab-유치부" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap px-3" onclick="setTab('유치부')">유치부</button>
+                <button id="tab-어린이부" class="flex-1 py-2.5 text-[13px] font-bold text-white/80 hover:text-white transition whitespace-nowrap px-3" onclick="setTab('어린이부')">어린이부</button>
             </div>
         </header>
 
@@ -98,16 +98,19 @@
             <div id="data-list" class="flex flex-col gap-3"></div>
         </main>
 
-        <!-- 하단 고정 버튼: 안내 + 일정표 + 숙소 -->
-        <div class="bg-white border-t border-gray-200 p-3 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10 grid grid-cols-3 gap-2" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));">
-            <button onclick="openInfo()" class="bg-white border-2 border-gray-800 hover:bg-gray-50 text-gray-800 font-bold py-3 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 text-sm">
-                <span class="text-lg">📋</span> 안내
+        <!-- ★ 하단 고정 버튼: 안내 + 일정표 + 숙소 + 율동영상 (4개 완벽 복원) ★ -->
+        <div class="bg-white border-t border-gray-200 p-2 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-10 grid grid-cols-4 gap-1.5" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));">
+            <button onclick="openInfo()" class="bg-white border-2 border-gray-800 hover:bg-gray-50 text-gray-800 font-bold py-2 rounded-xl shadow-sm transition flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs">
+                <span class="text-base leading-none">📋</span> 안내
             </button>
-            <button onclick="openTimetable()" class="bg-gray-800 hover:bg-black text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-sm">
-                <span class="text-lg">📅</span> 일정표
+            <button onclick="openTimetable()" class="bg-gray-800 hover:bg-black text-white font-bold py-2 rounded-xl shadow-md transition flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs">
+                <span class="text-base leading-none">📅</span> 일정표
             </button>
-            <button onclick="openLodging()" class="bg-[#5668d9] hover:bg-[#4555c7] text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-1.5 text-sm">
-                <span class="text-lg">🏠</span> 숙소
+            <button onclick="openLodging()" class="bg-[#5668d9] hover:bg-[#4555c7] text-white font-bold py-2 rounded-xl shadow-md transition flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs">
+                <span class="text-base leading-none">🏠</span> 숙소
+            </button>
+            <button onclick="openDance()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl shadow-md transition flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs">
+                <span class="text-base leading-none">🎵</span> 율동영상
             </button>
         </div>
 
@@ -123,7 +126,6 @@
                 </div>
                 <div class="p-4 overflow-y-auto" id="timetable-content">
                   <div style="display:flex; flex-direction:column; gap:16px;">
-
                     <!-- 금요일 -->
                     <div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
                       <div style="background:#E1F5EE; padding:14px 16px; display:flex; align-items:baseline; gap:8px;">
@@ -364,6 +366,60 @@
             </div>
         </div>
 
+        <!-- 새로 추가된 율동영상 모달 -->
+        <div id="danceModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
+            <div class="absolute inset-0" onclick="closeDance()"></div>
+            <div class="bg-[#f8f9fa] w-full max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[85dvh] animate-slide-up relative z-10">
+                <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-white rounded-t-3xl sm:rounded-2xl shrink-0">
+                    <h2 class="text-lg font-bold text-gray-800">🎵 찬양 율동영상</h2>
+                    <button onclick="closeDance()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-5 overflow-y-auto flex flex-col gap-6">
+
+                    <!-- 어린이부 영상 -->
+                    <div>
+                        <h3 class="text-base font-extrabold text-orange-600 mb-3 flex items-center gap-1.5">
+                            <span class="text-xl">👦🏻</span> 어린이부 율동
+                        </h3>
+                        <div class="flex flex-col gap-3">
+                            <a href="https://www.youtube.com/playlist?list=PLEroWDFqPM9bzXPywvpNSn-D1orhPA2xI" target="_blank" class="bg-white border border-gray-200 hover:border-red-400 hover:shadow-md p-4 rounded-xl flex items-center gap-3 transition cursor-pointer">
+                                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-gray-800 text-sm">일반 버전 재생목록</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">유튜브 앱으로 바로 열기</div>
+                                </div>
+                            </a>
+                            <a href="https://youtube.com/playlist?list=PLEroWDFqPM9Z-1YqEvjB35y1Kr587cM-p&si=biZpdpNwuEWErxYM" target="_blank" class="bg-white border border-gray-200 hover:border-blue-400 hover:shadow-md p-4 rounded-xl flex items-center gap-3 transition cursor-pointer">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-bold text-gray-800 text-sm">거울모드 버전 재생목록</div>
+                                    <div class="text-xs text-gray-500 mt-0.5">연습용 좌우반전 · 유튜브 앱으로 열기</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 유치부 영상 -->
+                    <div>
+                        <h3 class="text-base font-extrabold text-pink-600 mb-3 flex items-center gap-1.5">
+                            <span class="text-xl">👧🏻</span> 유치부 율동
+                        </h3>
+                        <div class="bg-gray-50 border border-gray-200 p-6 rounded-xl flex flex-col items-center justify-center gap-2">
+                            <span class="text-4xl mb-1">🚧</span>
+                            <div class="font-bold text-gray-600 text-sm">영상을 준비 중입니다</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <!-- 사진 크게 보기 -->
         <div id="photoLightbox" class="fixed inset-0 bg-black/90 z-[60] hidden items-center justify-center p-4" onclick="closePhoto()">
             <button class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 rounded-full p-2">
@@ -375,26 +431,10 @@
     </div>
 
     <script>
-        /* =========================================================
-           1) 시트 설정 — 여기만 관리하면 됩니다.
-           같은 스프레드시트 안에 탭 3개(명단 / 타임테이블 / 정보)를 두고,
-           "파일 > 공유 > 웹에 게시 > 전체 문서"로 게시한 뒤,
-           각 탭의 GID를 아래에 넣어주세요.
-           (GID = 해당 탭을 열었을 때 주소 끝의 #gid=XXXXXX 숫자)
-        ========================================================= */
-        const SHEET_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_Fs1olCu5C1oEiC88d6FekDDF0aNtG21_ex5sC7Y4JrGADra8HkOwwvj558rM7OUZgQMC7PpsORQ/pub";
-        const ROSTER_GID    = "27496411";          // 명단 (기존)
-        const TIMETABLE_GID = "여기에_타임테이블_탭_GID";  // 타임테이블 탭
-        const INFO_GID      = "여기에_정보_탭_GID";        // 정보(개요·사역·조직) 탭
-
-        function csvUrl(gid, bust) {
-            return `${SHEET_BASE}?gid=${gid}&single=true&output=csv` + (bust ? `&_=${Date.now()}` : '');
-        }
-        const GOOGLE_SHEET_CSV_URL = csvUrl(ROSTER_GID);
+        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_Fs1olCu5C1oEiC88d6FekDDF0aNtG21_ex5sC7Y4JrGADra8HkOwwvj558rM7OUZgQMC7PpsORQ/pub?gid=27496411&single=true&output=csv";
 
         /* =========================================================
-           2) 숙소 사진 — 여기에 방 사진을 추가하세요.
-           방 종류별로 { src: "사진경로", label: "방 이름" } 을 늘리면 됩니다.
+           숙소 사진 설정
         ========================================================= */
         const LODGING = {
             "4인실": [
@@ -411,15 +451,13 @@
             ]
         };
 
-        /* 방 종류별 실제 대여 개수 (헤더 우측에 표시). 사진 장수가 아니라 대여 수를 보여줍니다. */
         const ROOM_COUNT = {
             "4인실": "11개 대여",
             "6인실": "8개 대여"
         };
 
         /* =========================================================
-           3) 얼굴 사진 — 시트 "사진" 열을 안 써도, 여기 적으면 뜹니다.
-           "이름": "사진경로" 형태로 추가하세요. (시트에 값이 있으면 시트가 우선)
+           얼굴 사진 설정
         ========================================================= */
         const FACE_PHOTOS = {
             "곽미경": "photos/kwak.png",
@@ -448,63 +486,67 @@
             "강이연": "photos/eyun.png",
             "정경일": "photos/koungil.png",
             "박종훈 전도사": "photos/jonghoon.png",
-            "박은정": "photos/eunjeong.png",
+            "박은정": "photos/eunjeong.png"
         };
 
         let participantsData = [];
         let currentCategory = '전체';
-        let timetableLoaded = false;
-        let infoLoaded = false;
 
-        function escapeHtml(s){
-            return (s == null ? '' : ('' + s)).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+        function escapeHtml(s) {
+            return (s == null ? '' : ('' + s)).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
         }
 
         /* ===================== 모달 열고 닫기 ===================== */
-        function showModal(id){ const m = document.getElementById(id); m.classList.remove('hidden'); m.classList.add('flex'); }
-        function hideModal(id){ const m = document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); }
-        function openTimetable(){ showModal('timetableModal'); }
-        function closeTimetable(){ hideModal('timetableModal'); }
-        function openInfo(){ showModal('infoModal'); }
-        function closeInfo(){ hideModal('infoModal'); }
-        function openLodging(){ showModal('lodgingModal'); renderLodging(); }
-        function closeLodging(){ hideModal('lodgingModal'); }
+        function showModal(id) { const m = document.getElementById(id); m.classList.remove('hidden'); m.classList.add('flex'); }
+        function hideModal(id) { const m = document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); }
+        function openTimetable() { showModal('timetableModal'); }
+        function closeTimetable() { hideModal('timetableModal'); }
+        function openInfo() { showModal('infoModal'); }
+        function closeInfo() { hideModal('infoModal'); }
+        function openLodging() { showModal('lodgingModal'); renderLodging(); }
+        function closeLodging() { hideModal('lodgingModal'); }
+        function openDance() { showModal('danceModal'); }
+        function closeDance() { hideModal('danceModal'); }
 
         /* ===================== 사진 크게 보기 ===================== */
-        function openPhoto(src){
+        function openPhoto(src) {
             const box = document.getElementById('photoLightbox');
             document.getElementById('lightbox-img').src = src;
             box.classList.remove('hidden'); box.classList.add('flex');
         }
-        function closePhoto(){
+        function closePhoto() {
             const box = document.getElementById('photoLightbox');
             box.classList.add('hidden'); box.classList.remove('flex');
             document.getElementById('lightbox-img').src = '';
         }
 
-        /* ===================== 숙소 ===================== */
-        function renderLodging(){
+        /* ===================== 숙소 렌더링 ===================== */
+        function renderLodging() {
             const c = document.getElementById('lodging-content');
             const types = Object.keys(LODGING || {});
-            if(!types.length){ c.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">등록된 숙소 사진이 없습니다.</p>'; return; }
+            if(!types.length) { c.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">등록된 숙소 사진이 없습니다.</p>'; return; }
+            
             let html = '<div style="display:flex; flex-direction:column; gap:16px;">';
             types.forEach(type => {
                 const rooms = LODGING[type] || [];
                 html += `<div style="background:#ffffff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
                 html += `<div style="background:#5668d9; padding:12px 16px; display:flex; align-items:center; justify-content:space-between;">
-                    <span style="font-size:16px; font-weight:800; color:#fff;">🛏️ ${escapeHtml(type)}</span>
-                    <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${ROOM_COUNT[type] || rooms.length + '장'}</span></div>`;
+                            <span style="font-size:16px; font-weight:800; color:#fff;">🛏️ ${escapeHtml(type)}</span>
+                            <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${ROOM_COUNT[type] || rooms.length + '개'}</span>
+                         </div>`;
                 html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:12px;">';
+                
                 rooms.forEach(room => {
                     const url = photoUrl(room.src);
-                    const ph = "this.onerror=null;this.parentElement.innerHTML='<div style=\\'width:100%;height:120px;display:flex;align-items:center;justify-content:center;background:#f1f3f5;color:#9ca3af;font-size:13px;font-weight:600;\\'>사진 준비중</div>'";
+                    const ph = `this.onerror=null;this.parentElement.innerHTML='<div style="width:100%;height:120px;display:flex;align-items:center;justify-content:center;background:#f1f3f5;color:#9ca3af;font-size:13px;font-weight:600;">사진 준비중</div>'`;
                     const img = url
                         ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(room.label||'')}" referrerpolicy="no-referrer" onclick="openPhoto('${escapeHtml(url)}')" onerror="${ph}" style="width:100%; height:120px; object-fit:cover; display:block; cursor:pointer;">`
                         : `<div style="width:100%; height:120px; display:flex; align-items:center; justify-content:center; background:#f1f3f5; color:#9ca3af; font-size:13px; font-weight:600;">사진 준비중</div>`;
+                    
                     html += `<div style="border:1px solid #e5e7eb; border-radius:0.6rem; overflow:hidden; background:#fff;">
-                        ${img}
-                        ${room.label ? `<div style="padding:8px 10px; font-size:13px; font-weight:600; color:#374151; text-align:center;">${escapeHtml(room.label)}</div>` : ''}
-                    </div>`;
+                                ${img}
+                                ${room.label ? `<div style="padding:8px 10px; font-size:13px; font-weight:600; color:#374151; text-align:center;">${escapeHtml(room.label)}</div>` : ''}
+                             </div>`;
                 });
                 html += '</div></div>';
             });
@@ -512,163 +554,52 @@
             c.innerHTML = html;
         }
 
-        /* ===================== 타임테이블 ===================== */
-        const DAY_THEME = {
-            '금': {bg:'#E1F5EE', title:'#085041', date:'#0F6E56', accent:'#0F6E56'},
-            '토': {bg:'#EEEDFE', title:'#3C3489', date:'#534AB7', accent:'#534AB7'},
-            '일': {bg:'#FAECE7', title:'#712B13', date:'#993C1D', accent:'#993C1D'}
-        };
-        function dayTheme(day){
-            for(const k in DAY_THEME){ if(day && day.includes(k)) return DAY_THEME[k]; }
-            return {bg:'#F1EFE8', title:'#2C2C2A', date:'#5F5E5A', accent:'#5F5E5A'};
-        }
-        function isHighlight(v){
-            v = ('' + (v||'')).trim().toUpperCase();
-            return !(v === '' || v === 'N' || v === 'X' || v === 'FALSE' || v === '아니오');
-        }
-        function fmtTime(t){
-            if(!t) return '';
-            const m = ('' + t).split(/\s*[~–-]\s*/);
-            if(m.length === 2 && m[1]) return escapeHtml(m[0]) + '<br>~ ' + escapeHtml(m[1]);
-            return escapeHtml(t);
-        }
-
-        function loadTimetable(force){
-            const c = document.getElementById('timetable-content');
-            c.innerHTML = '<div class="loader"></div><p class="text-center text-gray-400 text-sm">일정표 불러오는 중...</p>';
-            Papa.parse(csvUrl(TIMETABLE_GID, force), {
-                download: true, header: false,
-                complete: (r) => {
-                    try { renderTimetable(parseTimetable(r.data)); timetableLoaded = true; }
-                    catch(e){ c.innerHTML = '<p class="text-center text-red-500 text-sm py-6">일정표를 불러오지 못했습니다.<br>시트 게시 상태와 GID를 확인해주세요.</p>'; }
-                },
-                error: () => { c.innerHTML = '<p class="text-center text-red-500 text-sm py-6">일정표를 불러오지 못했습니다.</p>'; }
-            });
-        }
-
-        function parseTimetable(raw){
-            if(!raw || !raw.length) return [];
-            const hi = raw.findIndex(row => row.some(cell => cell && ('' + cell).includes('시간')));
-            if(hi === -1) return [];
-            const headers = raw[hi]; const map = {};
-            headers.forEach((h, i) => {
-                if(!h) return; h = ('' + h).trim();
-                if(h.includes('요일')) map[i] = 'day';
-                else if(h.includes('날짜')) map[i] = 'date';
-                else if(h.includes('시간')) map[i] = 'time';
-                else if(h.includes('세부') || h.includes('상세') || h.includes('비고')) map[i] = 'detail';
-                else if(h.includes('제목') || h.includes('활동') || h.includes('내용')) map[i] = 'title';
-                else if(h.includes('강조') || h.includes('하이라이트')) map[i] = 'highlight';
-            });
-            const rows = raw.slice(hi + 1).map(row => {
-                const o = {}; row.forEach((cell, i) => { if(map[i]) o[map[i]] = cell ? ('' + cell).trim() : ''; });
-                return o;
-            }).filter(o => o.time || o.title);
-            let lastDay = '', lastDate = '';
-            rows.forEach(o => {
-                if(o.day) lastDay = o.day; else o.day = lastDay;
-                if(o.date) lastDate = o.date; else o.date = lastDate;
-            });
-            return rows;
-        }
-
-        function renderTimetable(rows){
-            const c = document.getElementById('timetable-content');
-            if(!rows.length){ c.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">일정 데이터가 없습니다.</p>'; return; }
-            const order = []; const groups = {};
-            rows.forEach(r => { const k = r.day || '기타'; if(!groups[k]){ groups[k] = []; order.push(k); } groups[k].push(r); });
-            let html = '<div style="display:flex; flex-direction:column; gap:16px;">';
-            order.forEach(day => {
-                const items = groups[day]; const th = dayTheme(day);
-                const date = (items.find(i => i.date) || {}).date || '';
-                html += `<div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
-                html += `<div style="background:${th.bg}; padding:14px 16px; display:flex; align-items:baseline; gap:8px;">
-                    <span style="font-size:17px; font-weight:800; color:${th.title};">${escapeHtml(day)}</span>
-                    <span style="font-size:14px; font-weight:700; color:${th.date};">${escapeHtml(date)}</span></div><div>`;
-                items.forEach((it, idx) => {
-                    const top = idx === 0 ? '' : 'border-top:1px solid #e5e7eb;';
-                    const zebra = idx % 2 === 1 ? 'background-color:#f8fafc;' : '';
-                    const hl = isHighlight(it.highlight);
-                    const titleColor = hl ? th.accent : '#1f2937';
-                    const titleWeight = hl ? 800 : 600;
-                    const detail = it.detail ? `<br><span style="font-size:13px; font-weight:500; color:${hl ? '#4b5563' : '#9ca3af'};">${escapeHtml(it.detail)}</span>` : '';
-                    html += `<div style="display:flex; gap:12px; padding:12px 16px; ${top} ${zebra}">
-                        <span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">${fmtTime(it.time)}</span>
-                        <span style="font-size:15px; font-weight:${titleWeight}; color:${titleColor}; line-height:1.5;">${escapeHtml(it.title)}${detail}</span>
-                    </div>`;
-                });
-                html += '</div></div>';
-            });
-            html += '</div>';
-            c.innerHTML = html;
-        }
-
-        /* ===================== 선교 안내(개요·사역·조직) ===================== */
-        function loadInfo(force){
-            const c = document.getElementById('info-content');
-            c.innerHTML = '<div class="loader"></div><p class="text-center text-gray-400 text-sm">안내 불러오는 중...</p>';
-            Papa.parse(csvUrl(INFO_GID, force), {
-                download: true, header: false,
-                complete: (r) => {
-                    try { renderInfo(parseInfo(r.data)); infoLoaded = true; }
-                    catch(e){ c.innerHTML = '<p class="text-center text-red-500 text-sm py-6">안내를 불러오지 못했습니다.<br>시트 게시 상태와 GID를 확인해주세요.</p>'; }
-                },
-                error: () => { c.innerHTML = '<p class="text-center text-red-500 text-sm py-6">안내를 불러오지 못했습니다.</p>'; }
-            });
-        }
-
-        function parseInfo(raw){
-            if(!raw || !raw.length) return [];
-            const hi = raw.findIndex(row => row.some(cell => cell && (('' + cell).includes('항목') || ('' + cell).includes('내용'))));
-            const map = {};
-            if(hi !== -1){
-                raw[hi].forEach((h, i) => {
-                    if(!h) return; h = ('' + h).trim();
-                    if(h.includes('섹션') || h.includes('구분') || h.includes('분류')) map[i] = 'section';
-                    else if(h.includes('항목') || h.includes('제목')) map[i] = 'label';
-                    else if(h.includes('내용') || h.includes('세부') || h.includes('상세')) map[i] = 'value';
-                });
+        // 사진 주소 정리 (구글 드라이브 공유 링크 → 표시용 썸네일로 변환)
+        function photoUrl(raw) {
+            if(!raw) return '';
+            raw = ('' + raw).trim();
+            if(!raw) return '';
+            let m = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+            if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
+            if(raw.includes('drive.google.com')){
+                m = raw.match(/[?&]id=([^&]+)/);
+                if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
             }
-            const hasMap = Object.keys(map).length > 0;
-            const rows = raw.slice(hi === -1 ? 0 : hi + 1).map(row => {
-                if(hasMap){ const o = {}; row.forEach((cell, i) => { if(map[i]) o[map[i]] = cell ? ('' + cell).trim() : ''; }); return o; }
-                return { section: (row[0]||'').trim(), label: (row[1]||'').trim(), value: (row[2]||'').trim() };
-            }).filter(o => o.label || o.value);
-            let last = ''; rows.forEach(o => { if(o.section) last = o.section; else o.section = last; });
-            return rows;
+            return raw;
         }
 
-        function renderInfo(rows){
-            const c = document.getElementById('info-content');
-            if(!rows.length){ c.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">안내 데이터가 없습니다.</p>'; return; }
-            const order = []; const groups = {};
-            rows.forEach(r => { const k = r.section || '기타'; if(!groups[k]){ groups[k] = []; order.push(k); } groups[k].push(r); });
-            let html = '<div style="display:flex; flex-direction:column; gap:16px;">';
-            order.forEach(sec => {
-                html += `<div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
-                html += `<div style="background:#5668d9; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">${escapeHtml(sec)}</span></div><div>`;
-                groups[sec].forEach((it, idx) => {
-                    const top = idx === 0 ? '' : 'border-top:1px solid #e5e7eb;';
-                    const zebra = idx % 2 === 1 ? 'background-color:#f8fafc;' : '';
-                    html += `<div style="display:flex; gap:12px; padding:12px 16px; ${top} ${zebra}">
-                        <span style="flex:0 0 96px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.5;">${escapeHtml(it.label)}</span>
-                        <span style="flex:1; font-size:15px; font-weight:500; color:#1f2937; line-height:1.5;">${escapeHtml(it.value)}</span>
-                    </div>`;
-                });
-                html += '</div></div>';
-            });
-            html += '</div>';
-            c.innerHTML = html;
+        // 사진이 없거나 안 열릴 때 쓰는 이니셜 동그라미
+        const AVATAR_COLORS = ['bg-blue-100 text-blue-700','bg-purple-100 text-purple-700','bg-pink-100 text-pink-700','bg-orange-100 text-orange-700','bg-green-100 text-green-700','bg-teal-100 text-teal-700'];
+        function initialsAvatar(name) {
+            const ch = ((name || '?').trim().charAt(0)) || '?';
+            let h = 0; 
+            for(const c of (name || '')) h = (h + c.charCodeAt(0)) % AVATAR_COLORS.length;
+            return `<div class="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold ${AVATAR_COLORS[h]} shrink-0 shadow-sm">${escapeHtml(ch)}</div>`;
+        }
+        
+        function avatarHTML(p) {
+            const raw = p["사진"] || FACE_PHOTOS[(p["이름"] || "").trim()] || "";
+            const url = photoUrl(raw);
+            if(url) {
+                const fallback = initialsAvatar(p["이름"]).replace(/"/g, '&quot;');
+                return `<img src="${escapeHtml(url)}" alt="${escapeHtml(p["이름"])}" referrerpolicy="no-referrer" class="w-11 h-11 rounded-full object-cover shrink-0 border border-gray-200 bg-gray-100" onerror="this.onerror=null;this.outerHTML='${fallback}'">`;
+            }
+            return initialsAvatar(p["이름"]);
         }
 
-        /* ===================== 명단 (기존 로직 유지) ===================== */
+        /* ===================== 명단 데이터 로드 및 렌더링 ===================== */
         function fetchData() {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('error-message').classList.add('hidden');
             document.getElementById('data-list').innerHTML = '';
+            
             Papa.parse(GOOGLE_SHEET_CSV_URL, {
-                download: true, header: false,
-                complete: (results) => { document.getElementById('loading').style.display = 'none'; processData(results.data); },
+                download: true, 
+                header: false,
+                complete: (results) => { 
+                    document.getElementById('loading').style.display = 'none'; 
+                    processData(results.data); 
+                },
                 error: () => {
                     document.getElementById('loading').style.display = 'none';
                     const errorMsg = document.getElementById('error-message');
@@ -690,7 +621,8 @@
             const headers = rawData[headerIndex];
             let headerMap = {};
             headers.forEach((h, i) => {
-                if(!h) return; h = h.trim();
+                if(!h) return; 
+                h = h.trim();
                 if(h.includes("이름")) headerMap[i] = "이름";
                 else if(h.includes("사진") || h.includes("이미지") || h.toLowerCase().includes("photo")) headerMap[i] = "사진";
                 else if(h.includes("사이즈") || h.includes("단체티")) headerMap[i] = "단체티 사이즈";
@@ -720,7 +652,9 @@
             currentCategory = cat;
             ['전체', '사역지원팀', '유치부', '어린이부'].forEach(t => {
                 const el = document.getElementById('tab-' + t);
-                el.className = (t === cat) ? "flex-1 py-2.5 text-[13px] font-bold bg-white text-[#5668d9] rounded-t-lg shadow-sm whitespace-nowrap" : "flex-1 py-2.5 text-[13px] font-bold text-white/80 whitespace-nowrap";
+                el.className = (t === cat) 
+                    ? "flex-1 py-2.5 text-[13px] font-bold bg-white text-[#5668d9] rounded-t-lg shadow-sm whitespace-nowrap px-3" 
+                    : "flex-1 py-2.5 text-[13px] font-bold text-white/80 whitespace-nowrap px-3";
             });
             filterList();
         }
@@ -733,8 +667,8 @@
             );
             if (currentCategory !== '전체') {
                 const leaderRank = (name) => {
-                    if (name === "박은정") return 2;            // 선교팀장: 무조건 최상단
-                    if (name === "김미라" || name === "이서하") return 1; // 부서 팀장
+                    if (name === "박은정") return 2;
+                    if (name === "김미라" || name === "이서하") return 1;
                     return 0;
                 };
                 filtered.sort((a, b) => leaderRank(b["이름"]) - leaderRank(a["이름"]));
@@ -742,41 +676,11 @@
             renderList(filtered);
         }
 
-        // 사진 주소 정리 (구글 드라이브 공유 링크 → 표시용 썸네일로 변환)
-        function photoUrl(raw){
-            if(!raw) return '';
-            raw = ('' + raw).trim();
-            if(!raw) return '';
-            let m = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-            if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
-            if(raw.includes('drive.google.com')){
-                m = raw.match(/[?&]id=([^&]+)/);
-                if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`;
-            }
-            return raw; // 일반 이미지 주소 또는 photos/이름.jpg 같은 상대경로
-        }
-
-        // 사진이 없거나 안 열릴 때 쓰는 이니셜 동그라미
-        const AVATAR_COLORS = ['bg-blue-100 text-blue-700','bg-purple-100 text-purple-700','bg-pink-100 text-pink-700','bg-orange-100 text-orange-700','bg-green-100 text-green-700','bg-teal-100 text-teal-700'];
-        function initialsAvatar(name){
-            const ch = ((name || '?').trim().charAt(0)) || '?';
-            let h = 0; for(const c of (name || '')) h = (h + c.charCodeAt(0)) % AVATAR_COLORS.length;
-            return `<div class="w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold ${AVATAR_COLORS[h]} shrink-0 shadow-sm">${escapeHtml(ch)}</div>`;
-        }
-        function avatarHTML(p){
-            const raw = p["사진"] || FACE_PHOTOS[(p["이름"] || "").trim()] || "";
-            const url = photoUrl(raw);
-            if(url){
-                const fallback = initialsAvatar(p["이름"]).replace(/"/g, '&quot;');
-                return `<img src="${escapeHtml(url)}" alt="${escapeHtml(p["이름"])}" referrerpolicy="no-referrer" class="w-11 h-11 rounded-full object-cover shrink-0 border border-gray-200 bg-gray-100" onerror="this.onerror=null;this.outerHTML='${fallback}'">`;
-            }
-            return initialsAvatar(p["이름"]);
-        }
-
         function renderList(data) {
             const list = document.getElementById('data-list');
             list.innerHTML = '';
             document.getElementById('total-count').innerText = `총 ${data.length}명`;
+            
             if(data.length === 0) {
                 list.innerHTML = '<p class="text-center text-gray-500 mt-5 bg-white py-8 rounded-lg shadow-sm border border-gray-100">명단이 없습니다.</p>';
                 return;
@@ -806,7 +710,6 @@
                     leaderBadge = `<span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-gradient-to-r from-pink-400 to-pink-600 text-white shadow-sm ml-1 animate-pulse">👑 유치부 팀장</span>`;
                 }
 
-                // 조 편성 태그 (색상 구분)
                 let groupBadge = p["조 편성"] || '미배정';
                 let groupColor = "bg-blue-50 text-blue-600 border border-blue-100";
                 if(groupBadge.includes("회계")) groupColor = "bg-purple-50 text-purple-600 border border-purple-100";
@@ -814,15 +717,14 @@
                 else if(groupBadge.includes("유치부")) groupColor = "bg-pink-50 text-pink-600 border border-pink-100";
                 else if(groupBadge.includes("어린이부")) groupColor = "bg-orange-50 text-orange-600 border border-orange-100";
 
-                // 입금 뱃지 (전체 탭에서만)
                 let payStatus = p["입금확인"] || '미납';
                 let payBadgeColor = "bg-red-100 text-red-700";
                 if(payStatus.includes("완납") || payStatus === "O" || payStatus.includes("확인") || payStatus.includes("완료")) {
                     payStatus = "완납"; payBadgeColor = "bg-green-100 text-green-700";
                 } else { payStatus = "미납"; }
+                
                 let payBadgeHTML = showExtraInfo ? `<span class="text-xs font-bold px-3 py-1.5 rounded-full ${payBadgeColor} shrink-0">입금: ${payStatus}</span>` : '';
 
-                // 기도제목 (모든 탭에서 표시)
                 let prayerText = (p["기도제목"] || "").trim();
                 let prayerHTML = prayerText ? `
                     <div class="mt-2.5 bg-indigo-50 border-l-4 border-indigo-300 rounded-r-lg p-3">
@@ -830,8 +732,14 @@
                         <div class="text-sm text-gray-700 leading-relaxed" style="white-space: pre-line;">${escapeHtml(prayerText)}</div>
                     </div>` : '';
 
-                // 비고
                 let bigoHTML = p["비고"] ? `<div class="text-xs text-gray-600 bg-yellow-50 p-2 rounded-lg mt-2 border border-yellow-100">📌 ${p["비고"]}</div>` : '';
+
+                let tshirtHTML = showExtraInfo && p["단체티 사이즈"] ? `
+                    <div class="flex items-center gap-1.5 mt-2.5 text-sm text-gray-600">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        티셔츠: <span class="font-semibold text-gray-700">${p["단체티 사이즈"]}</span>
+                    </div>
+                ` : '';
 
                 card.className = cardStyle;
                 card.innerHTML = `
@@ -846,6 +754,7 @@
                         </div>
                         ${payBadgeHTML}
                     </div>
+                    ${tshirtHTML}
                     ${prayerHTML}
                     ${bigoHTML}
                 `;

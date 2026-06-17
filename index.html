@@ -534,18 +534,18 @@
                             <span style="font-size:16px; font-weight:800; color:#fff;">🛏️ ${escapeHtml(type)}</span>
                             <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${ROOM_COUNT[type] || rooms.length + '개'}</span>
                          </div>`;
-                html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:12px;">';
+                html += '<div class="grid grid-cols-2 gap-3 p-3">';
                 
                 rooms.forEach(room => {
                     const url = photoUrl(room.src);
-                    const ph = `this.onerror=null;this.parentElement.innerHTML='<div style="width:100%;height:120px;display:flex;align-items:center;justify-content:center;background:#f1f3f5;color:#9ca3af;font-size:13px;font-weight:600;">사진 준비중</div>'`;
+                    const ph = `this.onerror=null;this.parentElement.innerHTML='<div class=&quot;w-full aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg border border-gray-200&quot;>사진 준비중</div>'`;
                     const img = url
-                        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(room.label||'')}" referrerpolicy="no-referrer" onclick="openPhoto('${escapeHtml(url)}')" onerror="${ph}" style="width:100%; height:120px; object-fit:cover; display:block; cursor:pointer;">`
-                        : `<div style="width:100%; height:120px; display:flex; align-items:center; justify-content:center; background:#f1f3f5; color:#9ca3af; font-size:13px; font-weight:600;">사진 준비중</div>`;
+                        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(room.label||'')}" referrerpolicy="no-referrer" onclick="openPhoto('${escapeHtml(url)}')" onerror="${ph}" class="w-full aspect-[4/3] object-cover rounded-lg shadow-sm cursor-pointer border border-gray-200 hover:opacity-90 transition">`
+                        : `<div class="w-full aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg shadow-sm border border-gray-200">사진 준비중</div>`;
                     
-                    html += `<div style="border:1px solid #e5e7eb; border-radius:0.6rem; overflow:hidden; background:#fff;">
+                    html += `<div class="flex flex-col gap-1.5">
                                 ${img}
-                                ${room.label ? `<div style="padding:8px 10px; font-size:13px; font-weight:600; color:#374151; text-align:center;">${escapeHtml(room.label)}</div>` : ''}
+                                ${room.label ? `<div class="text-xs font-bold text-gray-700 text-center">${escapeHtml(room.label)}</div>` : ''}
                              </div>`;
                 });
                 html += '</div></div>';
@@ -734,12 +734,8 @@
 
                 let bigoHTML = p["비고"] ? `<div class="text-xs text-gray-600 bg-yellow-50 p-2 rounded-lg mt-2 border border-yellow-100">📌 ${p["비고"]}</div>` : '';
 
-                let tshirtHTML = showExtraInfo && p["단체티 사이즈"] ? `
-                    <div class="flex items-center gap-1.5 mt-2.5 text-sm text-gray-600">
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        티셔츠: <span class="font-semibold text-gray-700">${p["단체티 사이즈"]}</span>
-                    </div>
-                ` : '';
+                // 전체 탭에서만 보이던 단체티 사이즈 (요청에 의해 블라인드 처리)
+                let tshirtHTML = '';
 
                 card.className = cardStyle;
                 card.innerHTML = `

@@ -290,6 +290,16 @@
             const c = document.getElementById('lodging-content');
             const types = Object.keys(LODGING || {});
             if(!types.length) { c.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">등록된 숙소 사진이 없습니다.</p>'; return; }
+
+            // 방 배정 데이터 수집: 시트 "숙소" 열에서 사람들을 방별로 그룹핑
+            const roomAssignments = {};
+            participantsData.forEach(p => {
+                const room = (p["숙소"] || "").trim();
+                if(!room) return;
+                if(!roomAssignments[room]) roomAssignments[room] = [];
+                roomAssignments[room].push(p["이름"]);
+            });
+
             let html = '<div style="display:flex; flex-direction:column; gap:16px;">';
             types.forEach(type => {
                 const rooms = LODGING[type] || [];
@@ -297,6 +307,7 @@
                 html += `<div style="background:#5668d9; padding:12px 16px; display:flex; align-items:center; justify-content:space-between;">
                             <span style="font-size:16px; font-weight:800; color:#fff;">🛏️ ${escapeHtml(type)}</span>
                             <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${ROOM_COUNT[type] || rooms.length + '개'}</span></div>`;
+                // 사진 그리드
                 html += '<div class="grid grid-cols-2 gap-3 p-3">';
                 rooms.forEach(room => {
                     const url = photoUrl(room.src);
@@ -306,8 +317,47 @@
                         : `<div class="w-full aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg shadow-sm border border-gray-200">사진 준비중</div>`;
                     html += `<div class="flex flex-col gap-1.5">${img}${room.label ? `<div class="text-xs font-bold text-gray-700 text-center">${escapeHtml(room.label)}</div>` : ''}</div>`;
                 });
-                html += '</div></div>';
+                html += '</div>';
+                // 방 배정 목록: 이 방 종류에 해당하는 배정 찾기
+                const matchingRooms = Object.keys(roomAssignments)
+                    .filter(key => key.includes(type))
+                    .sort((a, b) => {
+                        const numA = parseInt((a.match(/(\d+)\s*호/) || [])[1]) || 0;
+                        const numB = parseInt((b.match(/(\d+)\s*호/) || [])[1]) || 0;
+                        return numA - numB;
+                    });
+                if(matchingRooms.length > 0) {
+                    html += '<div style="border-top:1px solid #e5e7eb; padding:12px 16px;">';
+                    html += '<div style="font-size:13px; font-weight:700; color:#4b5563; margin-bottom:8px;">📋 방 배정</div>';
+                    matchingRooms.forEach((roomKey, idx) => {
+                        const names = roomAssignments[roomKey];
+                        const label = roomKey.replace(type, '').replace(/[,\s]+/g, ' ').trim() || roomKey;
+                        const bgColor = idx % 2 === 0 ? '' : 'background-color:#f8fafc;';
+                        html += `<div style="display:flex; gap:8px; padding:8px 0; ${idx > 0 ? 'border-top:1px solid #f3f4f6;' : ''} ${bgColor}">
+                            <span style="flex:0 0 48px; font-size:13px; font-weight:700; color:#5668d9;">${escapeHtml(label)}</span>
+                            <span style="font-size:13px; font-weight:500; color:#374151;">${names.map(n => escapeHtml(n)).join(', ')}</span>
+                        </div>`;
+                    });
+                    html += '</div>';
+                }
+                html += '</div>';
             });
+            // 미분류 (방 종류가 LODGING 키에 안 맞는 배정)
+            const allTyped = types.flatMap(t => Object.keys(roomAssignments).filter(k => k.includes(t)));
+            const unmatched = Object.keys(roomAssignments).filter(k => !allTyped.includes(k));
+            if(unmatched.length > 0) {
+                html += `<div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
+                html += `<div style="background:#6b7280; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">🏷️ 기타 배정</span></div>`;
+                html += '<div style="padding:12px 16px;">';
+                unmatched.sort().forEach((roomKey, idx) => {
+                    const names = roomAssignments[roomKey];
+                    html += `<div style="display:flex; gap:8px; padding:8px 0; ${idx > 0 ? 'border-top:1px solid #f3f4f6;' : ''}">
+                        <span style="flex:0 0 auto; font-size:13px; font-weight:700; color:#5668d9;">${escapeHtml(roomKey)}</span>
+                        <span style="font-size:13px; font-weight:500; color:#374151;">${names.map(n => escapeHtml(n)).join(', ')}</span>
+                    </div>`;
+                });
+                html += '</div></div>';
+            }
             html += '</div>';
             c.innerHTML = html;
         }
@@ -446,8 +496,6 @@
                 let payBadgeColor = "bg-red-100 text-red-700";
                 if(payStatus.includes("완납") || payStatus === "O" || payStatus.includes("확인") || payStatus.includes("완료")) { payStatus = "완납"; payBadgeColor = "bg-green-100 text-green-700"; } else { payStatus = "미납"; }
                 let payBadgeHTML = showExtraInfo ? `<span class="text-xs font-bold px-3 py-1.5 rounded-full ${payBadgeColor} shrink-0">입금: ${payStatus}</span>` : '';
-                let lodgingText = (p["숙소"] || "").trim();
-                let lodgingHTML = lodgingText ? `<div class="flex items-center gap-1.5 mt-2 text-sm text-gray-600"><span class="text-base">🛏️</span><span class="font-semibold text-gray-700">${escapeHtml(lodgingText)}</span></div>` : '';
                 let prayerText = (p["기도제목"] || "").trim();
                 let prayerHTML = prayerText ? `<div class="mt-2.5 bg-indigo-50 border-l-4 border-indigo-300 rounded-r-lg p-3"><div class="text-xs font-bold text-indigo-500 mb-1">🙏 기도제목</div><div class="text-sm text-gray-700 leading-relaxed" style="white-space: pre-line;">${escapeHtml(prayerText)}</div></div>` : '';
                 let bigoHTML = p["비고"] ? `<div class="text-xs text-gray-600 bg-yellow-50 p-2 rounded-lg mt-2 border border-yellow-100">📌 ${p["비고"]}</div>` : '';
@@ -464,7 +512,6 @@
                         </div>
                         ${payBadgeHTML}
                     </div>
-                    ${lodgingHTML}
                     ${prayerHTML}
                     ${bigoHTML}`;
                 list.appendChild(card);

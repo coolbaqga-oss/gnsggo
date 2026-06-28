@@ -28,11 +28,11 @@
             <div class="px-4">
                 <div class="flex items-center gap-3 mb-4">
                     <img src="logo.jpeg" alt="로고" class="app-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/42/ffffff/5668d9?text=Logo';">
-                    <h1 class="text-xl font-bold tracking-tight">국내선교 참가 명단</h1>
+                    <h1 class="text-xl font-bold tracking-tight">2026 7공동체+6교구 국내선교</h1>
                 </div>
                 <div class="flex items-center gap-2 mb-4">
                     <div class="relative flex-1">
-                        <input type="text" id="searchInput" placeholder="이름 또는 조 검색..." class="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-sm text-sm" onkeyup="filterList()">
+                        <input type="text" id="searchInput" placeholder="이름 또는 조 검색..." class="w-full pl-10 pr-4 py-2.5 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 shadow-sm text-sm" onkeyup="handleSearch()">
                         <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                     <div class="bg-[#eec04b] text-[#5c4009] px-3 py-2.5 rounded-xl text-sm font-bold shadow-sm whitespace-nowrap flex items-center justify-center gap-1.5">
@@ -62,6 +62,7 @@
             <button onclick="openLodging()" class="bg-[#5668d9] hover:bg-[#4555c7] text-white font-bold py-2 rounded-xl shadow-md transition flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs"><span class="text-base leading-none">🏠</span> 숙소</button>
             <button onclick="openDance()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded-xl shadow-md transition flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs"><span class="text-base leading-none">🎵</span> 율동영상</button>
         </div>
+        
         <!-- 일정표 모달 -->
         <div id="timetableModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
             <div class="absolute inset-0" onclick="closeTimetable()"></div>
@@ -71,51 +72,52 @@
                     <button onclick="closeTimetable()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
                 <div class="p-4 overflow-y-auto" id="timetable-content">
-                  <div style="display:flex; flex-direction:column; gap:16px;">
-                    <div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                      <div style="background:#E1F5EE; padding:14px 16px; display:flex; align-items:baseline; gap:8px;"><span style="font-size:17px; font-weight:800; color:#085041;">금요일</span><span style="font-size:14px; font-weight:700; color:#0F6E56;">7 / 24</span></div>
+                  <div class="flex flex-col gap-4">
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                      <div class="bg-[#E1F5EE] px-4 py-3.5 flex items-baseline gap-2"><span class="text-[17px] font-extrabold text-[#085041]">금요일</span><span class="text-sm font-bold text-[#0F6E56]">7 / 24</span></div>
                       <div>
-                        <div style="display:flex; gap:12px; padding:12px 16px;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">06:30</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🚌 무학교회 집결</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">07:00<br>~ 09:00</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🛣️ 출발 · 신봉교회로 이동</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">09:00<br>~ 12:00</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🏫 어린이 성경학교 시작<br><span style="font-size:13px; font-weight:500; color:#9ca3af;">신봉교회 주관 · 개회 예배 및 공과 활동</span></span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">12:00</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🍚 점심식사 <span style="color:#9ca3af; font-size:12px; font-weight:500;">(신봉교회)</span></span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">13:00<br>~ 16:30</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🎨 중점 사역 1<br><span style="font-size:13px; font-weight:500; color:#9ca3af;">어린이 성경학교 오후 활동</span></span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">16:30<br>~ 18:30</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🍖 저녁식사 <span style="color:#9ca3af; font-size:12px; font-weight:500;">(바베큐 파티)</span></span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">18:30<br>~ 20:00</span><span style="font-size:15px; font-weight:800; color:#0F6E56;">💬 나눔의 시간</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">20:00 ~</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🌙 휴식 및 취침</span></div>
+                        <div class="flex gap-3 px-4 py-3"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">06:30</span><span class="text-[15px] font-semibold text-gray-800">🚌 무학교회 집결</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600 leading-tight">07:00<br>~ 09:00</span><span class="text-[15px] font-semibold text-gray-800">🛣️ 출발 · 신봉교회로 이동</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600 leading-tight">09:00<br>~ 12:00</span><span class="text-[15px] font-bold text-gray-800">🏫 어린이 성경학교 시작<br><span class="text-[13px] font-medium text-gray-400">신봉교회 주관 · 개회 예배 및 공과 활동</span></span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">12:00</span><span class="text-[15px] font-bold text-gray-800">🍚 점심식사 <span class="text-gray-400 text-xs font-medium">(신봉교회)</span></span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600 leading-tight">13:00<br>~ 16:30</span><span class="text-[15px] font-bold text-gray-800">🎨 중점 사역 1<br><span class="text-[13px] font-medium text-gray-400">어린이 성경학교 오후 활동</span></span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600 leading-tight">16:30<br>~ 18:30</span><span class="text-[15px] font-bold text-gray-800">🍖 저녁식사 <span class="text-gray-400 text-xs font-medium">(바베큐 파티)</span></span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600 leading-tight">18:30<br>~ 20:00</span><span class="text-[15px] font-extrabold text-[#0F6E56]">💬 나눔의 시간</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">20:00 ~</span><span class="text-[15px] font-semibold text-gray-800">🌙 휴식 및 취침</span></div>
                       </div>
                     </div>
-                    <div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                      <div style="background:#EEEDFE; padding:14px 16px; display:flex; align-items:baseline; gap:8px;"><span style="font-size:17px; font-weight:800; color:#3C3489;">토요일</span><span style="font-size:14px; font-weight:700; color:#534AB7;">7 / 25</span></div>
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                      <div class="bg-[#EEEDFE] px-4 py-3.5 flex items-baseline gap-2"><span class="text-[17px] font-extrabold text-[#3C3489]">토요일</span><span class="text-sm font-bold text-[#534AB7]">7 / 25</span></div>
                       <div>
-                        <div style="display:flex; gap:12px; padding:12px 16px;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">07:00</span><span style="font-size:15px; font-weight:600; color:#1f2937;">☀️ 기상</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">08:00</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🍚 아침식사</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">09:00 ~</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🏫 어린이 성경학교 시작</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563; line-height:1.4;">09:00<br>~ 09:30</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🧸 유치부 접수</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">09:30 ~</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🧸 유치부 성경학교 시작</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">12:00</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🍚 점심식사</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">13:00 ~</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🎪 해피랜드<br><span style="font-size:13px; font-weight:500; color:#9ca3af;">에어바운스 · 달란트 시장 · 인생네컷 · 간식</span></span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">17:00</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🍚 저녁식사</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">18:30</span><span style="font-size:15px; font-weight:800; color:#534AB7;">⛪️ 찬양집회<br><span style="font-size:13px; font-weight:600; color:#4b5563;">Wellside · 박종훈 전도사</span></span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">22:00</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🌙 휴식 및 취침</span></div>
+                        <div class="flex gap-3 px-4 py-3"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">07:00</span><span class="text-[15px] font-semibold text-gray-800">☀️ 기상</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">08:00</span><span class="text-[15px] font-bold text-gray-800">🍚 아침식사</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">09:00 ~</span><span class="text-[15px] font-bold text-gray-800">🏫 어린이 성경학교 시작</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600 leading-tight">09:00<br>~ 09:30</span><span class="text-[15px] font-semibold text-gray-800">🧸 유치부 접수</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">09:30 ~</span><span class="text-[15px] font-bold text-gray-800">🧸 유치부 성경학교 시작</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">12:00</span><span class="text-[15px] font-bold text-gray-800">🍚 점심식사</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">13:00 ~</span><span class="text-[15px] font-bold text-gray-800">🎪 해피랜드<br><span class="text-[13px] font-medium text-gray-400">에어바운스 · 달란트 시장 · 인생네컷 · 간식</span></span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">17:00</span><span class="text-[15px] font-bold text-gray-800">🍚 저녁식사</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">18:30</span><span class="text-[15px] font-extrabold text-[#534AB7]">⛪️ 찬양집회<br><span class="text-[13px] font-semibold text-gray-600">Wellside · 박종훈 전도사</span></span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">22:00</span><span class="text-[15px] font-semibold text-gray-800">🌙 휴식 및 취침</span></div>
                       </div>
                     </div>
-                    <div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                      <div style="background:#FAECE7; padding:14px 16px; display:flex; align-items:baseline; gap:8px;"><span style="font-size:17px; font-weight:800; color:#712B13;">주일</span><span style="font-size:14px; font-weight:700; color:#993C1D;">7 / 26</span></div>
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                      <div class="bg-[#FAECE7] px-4 py-3.5 flex items-baseline gap-2"><span class="text-[17px] font-extrabold text-[#712B13]">주일</span><span class="text-sm font-bold text-[#993C1D]">7 / 26</span></div>
                       <div>
-                        <div style="display:flex; gap:12px; padding:12px 16px;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">07:00</span><span style="font-size:15px; font-weight:600; color:#1f2937;">☀️ 기상</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">08:00</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🍚 아침식사</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">10:00</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🧳 체크아웃 및 정리</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">11:00</span><span style="font-size:15px; font-weight:800; color:#993C1D;">⛪️ 주일 예배 <span style="font-size:12px; font-weight:600; color:#9ca3af;">(신봉교회)</span></span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">12:00</span><span style="font-size:15px; font-weight:700; color:#1f2937;">🍚 점심식사</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">13:00</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🚌 서울로 이동</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 60px; font-size:14px; font-weight:700; color:#4b5563;">18:00 ~</span><span style="font-size:15px; font-weight:600; color:#1f2937;">🏠 도착 · 짐정리 및 해산</span></div>
+                        <div class="flex gap-3 px-4 py-3"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">07:00</span><span class="text-[15px] font-semibold text-gray-800">☀️ 기상</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">08:00</span><span class="text-[15px] font-bold text-gray-800">🍚 아침식사</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">10:00</span><span class="text-[15px] font-semibold text-gray-800">🧳 체크아웃 및 정리</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">11:00</span><span class="text-[15px] font-extrabold text-[#993C1D]">⛪️ 주일 예배 <span class="text-xs font-semibold text-gray-400">(신봉교회)</span></span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">12:00</span><span class="text-[15px] font-bold text-gray-800">🍚 점심식사</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">13:00</span><span class="text-[15px] font-semibold text-gray-800">🚌 서울로 이동</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_60px] text-sm font-bold text-gray-600">18:00 ~</span><span class="text-[15px] font-semibold text-gray-800">🏠 도착 · 짐정리 및 해산</span></div>
                       </div>
                     </div>
                   </div>
                 </div>
             </div>
         </div>
+        
         <!-- 선교 안내 모달 -->
         <div id="infoModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
             <div class="absolute inset-0" onclick="closeInfo()"></div>
@@ -125,39 +127,40 @@
                     <button onclick="closeInfo()" class="text-gray-400 hover:text-gray-700 bg-gray-100 rounded-full p-1.5 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                 </div>
                 <div class="p-4 overflow-y-auto" id="info-content">
-                  <div style="display:flex; flex-direction:column; gap:16px;">
-                    <div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                      <div style="background:#5668d9; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">📌 개요</span></div>
+                  <div class="flex flex-col gap-4">
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                      <div class="bg-[#5668d9] px-4 py-3"><span class="text-base font-extrabold text-white">📌 개요</span></div>
                       <div>
-                        <div style="display:flex; gap:12px; padding:12px 16px;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">주제</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">용서받고 사랑하고, 고고 대모험! (엡 4:31–32)</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">일정</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">7/24–26 (금–일)</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">장소</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">신봉교회 (상주)</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">참여 인원</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">청년 30명 · 교구 15명</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">대상 인원</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">약 200명 (아기학교 35 · 어린이 45 · 다문화가정 100+)</span></div>
+                        <div class="flex gap-3 px-4 py-3"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">주제</span><span class="flex-1 text-[15px] font-medium text-gray-800">용서받고 사랑하고, 고고 대모험! (엡 4:31–32)</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">일정</span><span class="flex-1 text-[15px] font-medium text-gray-800">7/24–26 (금–일)</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">장소</span><span class="flex-1 text-[15px] font-medium text-gray-800">신봉교회 (상주)</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">참여 인원</span><span class="flex-1 text-[15px] font-medium text-gray-800">청년 30명 · 교구 15명</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">대상 인원</span><span class="flex-1 text-[15px] font-medium text-gray-800">약 200명 (아기학교 35 · 어린이 45 · 다문화가정 100+)</span></div>
                       </div>
                     </div>
-                    <div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                      <div style="background:#5668d9; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">👥 조직</span></div>
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                      <div class="bg-[#5668d9] px-4 py-3"><span class="text-base font-extrabold text-white">👥 조직</span></div>
                       <div>
-                        <div style="display:flex; gap:12px; padding:12px 16px;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">지도</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">정일균 목사 · 박종훈 전도사</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">청년선교팀장</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">박은정</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">사역팀장</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">이서하 · 김미라</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">회계</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">이현정(정) · 최지나(부)</span></div>
+                        <div class="flex gap-3 px-4 py-3"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">지도</span><span class="flex-1 text-[15px] font-medium text-gray-800">정일균 목사 · 박종훈 전도사</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">청년선교팀장</span><span class="flex-1 text-[15px] font-medium text-gray-800">박은정</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">사역팀장</span><span class="flex-1 text-[15px] font-medium text-gray-800">이서하 · 김미라</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">회계</span><span class="flex-1 text-[15px] font-medium text-gray-800">이현정(정) · 최지나(부)</span></div>
                       </div>
                     </div>
-                    <div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                      <div style="background:#5668d9; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">🎯 사역</span></div>
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                      <div class="bg-[#5668d9] px-4 py-3"><span class="text-base font-extrabold text-white">🎯 사역</span></div>
                       <div>
-                        <div style="display:flex; gap:12px; padding:12px 16px;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">유치부 성경학교</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">1–7세 대상 · 미취학 성경학교(예정)</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">어린이 성경학교</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">8–13세 대상</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">해피랜드</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">에어바운스 · 달란트시장 · 인생네컷 · 간식부스</span></div>
-                        <div style="display:flex; gap:12px; padding:12px 16px; border-top:1px solid #e5e7eb; background-color:#f8fafc;"><span style="flex:0 0 84px; font-size:14px; font-weight:700; color:#4b5563;">찬양집회</span><span style="flex:1; font-size:15px; font-weight:500; color:#1f2937;">무학·신봉·인근 자립대상교회 아이들과 함께</span></div>
+                        <div class="flex gap-3 px-4 py-3"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">유치부 성경학교</span><span class="flex-1 text-[15px] font-medium text-gray-800">1–7세 대상 · 미취학 성경학교(예정)</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">어린이 성경학교</span><span class="flex-1 text-[15px] font-medium text-gray-800">8–13세 대상</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">해피랜드</span><span class="flex-1 text-[15px] font-medium text-gray-800">에어바운스 · 달란트시장 · 인생네컷 · 간식부스</span></div>
+                        <div class="flex gap-3 px-4 py-3 border-t border-gray-200 bg-gray-50"><span class="flex-[0_0_84px] text-sm font-bold text-gray-600">찬양집회</span><span class="flex-1 text-[15px] font-medium text-gray-800">무학·신봉·인근 자립대상교회 아이들과 함께</span></div>
                       </div>
                     </div>
                   </div>
                 </div>
             </div>
         </div>
+        
         <!-- 숙소 모달 -->
         <div id="lodgingModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
             <div class="absolute inset-0" onclick="closeLodging()"></div>
@@ -169,6 +172,7 @@
                 <div class="p-4 overflow-y-auto" id="lodging-content"></div>
             </div>
         </div>
+        
         <!-- 율동영상 모달 -->
         <div id="danceModal" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end sm:justify-center items-center sm:p-4 transition-opacity backdrop-blur-sm">
             <div class="absolute inset-0" onclick="closeDance()"></div>
@@ -198,12 +202,14 @@
                 </div>
             </div>
         </div>
+        
         <!-- 사진 크게 보기 -->
         <div id="photoLightbox" class="fixed inset-0 bg-black/90 z-[60] hidden items-center justify-center p-4" onclick="closePhoto()">
             <button class="absolute top-4 right-4 text-white/80 hover:text-white bg-white/10 rounded-full p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85dvh] rounded-xl shadow-2xl object-contain">
         </div>
     </div>
+    
     <script>
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRH_Fs1olCu5C1oEiC88d6FekDDF0aNtG21_ex5sC7Y4JrGADra8HkOwwvj558rM7OUZgQMC7PpsORQ/pub?gid=27496411&single=true&output=csv";
 
@@ -257,6 +263,28 @@
             "박은정": "photos/eunjeong.png"
         };
 
+        // 리더 정보 하드코딩 분리
+        const LEADERS = {
+            "박은정": { 
+                cardStyle: "crown-card p-4 rounded-xl shadow-lg border-2 border-amber-400 ring-2 ring-amber-300/50 relative overflow-hidden", 
+                nameStyle: "font-extrabold text-xl text-amber-900", 
+                topDivider: "pb-1",
+                badge: `<span class="crown-badge text-sm font-extrabold px-3 py-1 rounded-full ml-1.5 inline-flex items-center gap-1 whitespace-nowrap">선교팀장 <span class="text-lg leading-none">👑</span></span>`
+            },
+            "김미라": { 
+                cardStyle: "bg-orange-50 p-4 rounded-lg shadow-md border-2 border-orange-400 relative overflow-hidden", 
+                nameStyle: "font-bold text-lg text-orange-900", 
+                topDivider: "border-b border-gray-100 pb-2",
+                badge: `<span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-sm ml-1 animate-pulse">👑 어린이부 팀장</span>`
+            },
+            "이서하": { 
+                cardStyle: "bg-pink-50 p-4 rounded-lg shadow-md border-2 border-pink-400 relative overflow-hidden", 
+                nameStyle: "font-bold text-lg text-pink-900", 
+                topDivider: "border-b border-gray-100 pb-2",
+                badge: `<span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-gradient-to-r from-pink-400 to-pink-600 text-white shadow-sm ml-1 animate-pulse">👑 유치부 팀장</span>`
+            }
+        };
+
         let participantsData = [];
         let currentCategory = '전체';
         let prayerWeeks = [];
@@ -287,12 +315,21 @@
             document.getElementById('lightbox-img').src = '';
         }
 
+        // 이미지 에러 핸들링 함수 분리
+        function handleImgError(img) {
+            img.onerror = null;
+            img.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.className = 'w-full aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg border border-gray-200';
+            fallback.innerText = '사진 준비중';
+            img.parentElement.appendChild(fallback);
+        }
+
         function renderLodging() {
             const c = document.getElementById('lodging-content');
             const types = Object.keys(LODGING || {});
             if(!types.length) { c.innerHTML = '<p class="text-center text-gray-400 text-sm py-6">등록된 숙소 사진이 없습니다.</p>'; return; }
 
-            // 방 배정 데이터 수집: 시트 "숙소" 열에서 사람들을 방별로 그룹핑
             const roomAssignments = {};
             participantsData.forEach(p => {
                 const room = (p["숙소"] || "").trim();
@@ -301,25 +338,23 @@
                 roomAssignments[room].push(p["이름"]);
             });
 
-            let html = '<div style="display:flex; flex-direction:column; gap:16px;">';
+            let html = '<div class="flex flex-col gap-4">';
             types.forEach(type => {
                 const rooms = LODGING[type] || [];
-                html += `<div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
-                html += `<div style="background:#5668d9; padding:12px 16px; display:flex; align-items:center; justify-content:space-between;">
-                            <span style="font-size:16px; font-weight:800; color:#fff;">🛏️ ${escapeHtml(type)}</span>
-                            <span style="font-size:13px; font-weight:600; color:#dfe4fb;">${ROOM_COUNT[type] || rooms.length + '개'}</span></div>`;
-                // 사진 그리드
+                html += `<div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">`;
+                html += `<div class="bg-[#5668d9] px-4 py-3 flex items-center justify-between">
+                            <span class="text-base font-extrabold text-white">🛏️ ${escapeHtml(type)}</span>
+                            <span class="text-[13px] font-semibold text-[#dfe4fb]">${ROOM_COUNT[type] || rooms.length + '개'}</span></div>`;
                 html += '<div class="grid grid-cols-2 gap-3 p-3">';
                 rooms.forEach(room => {
                     const url = photoUrl(room.src);
-                    const ph = `this.onerror=null;this.parentElement.innerHTML='<div class=&quot;w-full aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg border border-gray-200&quot;>사진 준비중</div>'`;
                     const img = url
-                        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(room.label||'')}" referrerpolicy="no-referrer" onclick="openPhoto('${escapeHtml(url)}')" onerror="${ph}" class="w-full aspect-[4/3] object-cover rounded-lg shadow-sm cursor-pointer border border-gray-200 hover:opacity-90 transition">`
+                        ? `<img src="${escapeHtml(url)}" alt="${escapeHtml(room.label||'')}" referrerpolicy="no-referrer" onclick="openPhoto('${escapeHtml(url)}')" onerror="handleImgError(this)" class="w-full aspect-[4/3] object-cover rounded-lg shadow-sm cursor-pointer border border-gray-200 hover:opacity-90 transition">`
                         : `<div class="w-full aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 text-xs font-semibold rounded-lg shadow-sm border border-gray-200">사진 준비중</div>`;
                     html += `<div class="flex flex-col gap-1.5">${img}${room.label ? `<div class="text-xs font-bold text-gray-700 text-center">${escapeHtml(room.label)}</div>` : ''}</div>`;
                 });
                 html += '</div>';
-                // 방 배정 목록: 이 방 종류에 해당하는 배정 찾기
+                
                 const matchingRooms = Object.keys(roomAssignments)
                     .filter(key => key.includes(type))
                     .sort((a, b) => {
@@ -328,33 +363,32 @@
                         return numA - numB;
                     });
                 if(matchingRooms.length > 0) {
-                    html += '<div style="border-top:1px solid #e5e7eb; padding:12px 16px;">';
-                    html += '<div style="font-size:13px; font-weight:700; color:#4b5563; margin-bottom:8px;">📋 방 배정</div>';
+                    html += '<div class="border-t border-gray-200 p-3">';
+                    html += '<div class="text-[13px] font-bold text-gray-600 mb-2">📋 방 배정</div>';
                     matchingRooms.forEach((roomKey, idx) => {
                         const names = roomAssignments[roomKey];
                         const label = roomKey.replace(type, '').replace(/[,\s]+/g, ' ').trim() || roomKey;
-                        const bgColor = idx % 2 === 0 ? '' : 'background-color:#f8fafc;';
-                        html += `<div style="display:flex; gap:8px; padding:8px 0; ${idx > 0 ? 'border-top:1px solid #f3f4f6;' : ''} ${bgColor}">
-                            <span style="flex:0 0 48px; font-size:13px; font-weight:700; color:#5668d9;">${escapeHtml(label)}</span>
-                            <span style="font-size:13px; font-weight:500; color:#374151;">${names.map(n => escapeHtml(n)).join(', ')}</span>
+                        const bgColor = idx % 2 === 0 ? '' : 'bg-gray-50';
+                        html += `<div class="flex gap-2 py-2 ${idx > 0 ? 'border-t border-gray-100' : ''} ${bgColor}">
+                            <span class="flex-[0_0_48px] text-[13px] font-bold text-[#5668d9]">${escapeHtml(label)}</span>
+                            <span class="text-[13px] font-medium text-gray-700">${names.map(n => escapeHtml(n)).join(', ')}</span>
                         </div>`;
                     });
                     html += '</div>';
                 }
                 html += '</div>';
             });
-            // 미분류 (방 종류가 LODGING 키에 안 맞는 배정)
             const allTyped = types.flatMap(t => Object.keys(roomAssignments).filter(k => k.includes(t)));
             const unmatched = Object.keys(roomAssignments).filter(k => !allTyped.includes(k));
             if(unmatched.length > 0) {
-                html += `<div style="background:#fff; border:1px solid #e5e7eb; border-radius:0.75rem; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.05);">`;
-                html += `<div style="background:#6b7280; padding:12px 16px;"><span style="font-size:16px; font-weight:800; color:#fff;">🏷️ 기타 배정</span></div>`;
-                html += '<div style="padding:12px 16px;">';
+                html += `<div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">`;
+                html += `<div class="bg-gray-500 px-4 py-3"><span class="text-base font-extrabold text-white">🏷️ 기타 배정</span></div>`;
+                html += '<div class="p-3">';
                 unmatched.sort().forEach((roomKey, idx) => {
                     const names = roomAssignments[roomKey];
-                    html += `<div style="display:flex; gap:8px; padding:8px 0; ${idx > 0 ? 'border-top:1px solid #f3f4f6;' : ''}">
-                        <span style="flex:0 0 auto; font-size:13px; font-weight:700; color:#5668d9;">${escapeHtml(roomKey)}</span>
-                        <span style="font-size:13px; font-weight:500; color:#374151;">${names.map(n => escapeHtml(n)).join(', ')}</span>
+                    html += `<div class="flex gap-2 py-2 ${idx > 0 ? 'border-t border-gray-100' : ''}">
+                        <span class="flex-[0_0_auto] text-[13px] font-bold text-[#5668d9]">${escapeHtml(roomKey)}</span>
+                        <span class="text-[13px] font-medium text-gray-700">${names.map(n => escapeHtml(n)).join(', ')}</span>
                     </div>`;
                 });
                 html += '</div></div>';
@@ -389,11 +423,15 @@
             return initialsAvatar(p["이름"]);
         }
 
+        // 캐시 방지를 위한 타임스탬프 추가
         function fetchData() {
             document.getElementById('loading').style.display = 'block';
             document.getElementById('error-message').classList.add('hidden');
             document.getElementById('data-list').innerHTML = '';
-            Papa.parse(GOOGLE_SHEET_CSV_URL, {
+            
+            const cacheBustUrl = GOOGLE_SHEET_CSV_URL + "&t=" + new Date().getTime();
+            
+            Papa.parse(cacheBustUrl, {
                 download: true, header: false,
                 complete: (results) => { document.getElementById('loading').style.display = 'none'; processData(results.data); },
                 error: () => {
@@ -408,7 +446,11 @@
         function processData(rawData) {
             if (!rawData || rawData.length === 0) return;
             let headerIndex = rawData.findIndex(row => row.some(cell => cell && typeof cell === 'string' && cell.includes("이름")));
-            if (headerIndex === -1) { document.getElementById('error-message').innerHTML = "<strong>⚠️ '이름' 열을 찾을 수 없습니다.</strong>"; document.getElementById('error-message').classList.remove('hidden'); return; }
+            if (headerIndex === -1) { 
+                document.getElementById('error-message').innerHTML = "<strong>⚠️ '이름' 열을 찾을 수 없습니다.</strong>"; 
+                document.getElementById('error-message').classList.remove('hidden'); 
+                return; 
+            }
             const headers = rawData[headerIndex];
             let headerMap = {};
             prayerWeeks = [];
@@ -457,6 +499,13 @@
             filterList();
         }
 
+        // 검색 디바운싱 적용
+        let searchTimer;
+        function handleSearch() {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(filterList, 200);
+        }
+
         function filterList() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             let filtered = participantsData.filter(p =>
@@ -464,7 +513,11 @@
                 (currentCategory === '전체' || (p["조 편성"] || "").includes(currentCategory))
             );
             if (currentCategory !== '전체') {
-                const leaderRank = (name) => { if (name === "박은정") return 2; if (name === "김미라" || name === "이서하") return 1; return 0; };
+                // LEADERS 객체를 활용하여 정렬
+                const leaderRank = (name) => { 
+                    if (LEADERS[name]) return Object.keys(LEADERS).indexOf(name) === 0 ? 2 : 1; 
+                    return 0; 
+                };
                 filtered.sort((a, b) => leaderRank(b["이름"]) - leaderRank(a["이름"]));
             }
             renderList(filtered);
@@ -476,23 +529,23 @@
             document.getElementById('total-count').innerText = `총 ${data.length}명`;
             if(data.length === 0) { list.innerHTML = '<p class="text-center text-gray-500 mt-5 bg-white py-8 rounded-lg shadow-sm border border-gray-100">명단이 없습니다.</p>'; return; }
             const showExtraInfo = (currentCategory === '전체');
+            
             data.forEach((p, pIdx) => {
                 const card = document.createElement('div');
                 let cardStyle = "bg-white p-4 rounded-lg shadow-sm border border-gray-200";
                 let nameStyle = "font-bold text-lg text-gray-800";
                 let leaderBadge = "";
                 let topDivider = "border-b border-gray-100 pb-2";
-                if (p["이름"] === "박은정") {
-                    cardStyle = "crown-card p-4 rounded-xl shadow-lg border-2 border-amber-400 ring-2 ring-amber-300/50 relative overflow-hidden";
-                    nameStyle = "font-extrabold text-xl text-amber-900"; topDivider = "pb-1";
-                    leaderBadge = `<span class="crown-badge text-sm font-extrabold px-3 py-1 rounded-full ml-1.5 inline-flex items-center gap-1 whitespace-nowrap">선교팀장 <span class="text-lg leading-none">👑</span></span>`;
-                } else if (p["이름"] === "김미라") {
-                    cardStyle = "bg-orange-50 p-4 rounded-lg shadow-md border-2 border-orange-400 relative overflow-hidden"; nameStyle = "font-bold text-lg text-orange-900";
-                    leaderBadge = `<span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-sm ml-1 animate-pulse">👑 어린이부 팀장</span>`;
-                } else if (p["이름"] === "이서하") {
-                    cardStyle = "bg-pink-50 p-4 rounded-lg shadow-md border-2 border-pink-400 relative overflow-hidden"; nameStyle = "font-bold text-lg text-pink-900";
-                    leaderBadge = `<span class="text-xs font-extrabold px-2 py-0.5 rounded-md bg-gradient-to-r from-pink-400 to-pink-600 text-white shadow-sm ml-1 animate-pulse">👑 유치부 팀장</span>`;
+                
+                // LEADERS 객체 기반으로 동적 할당
+                const leaderInfo = LEADERS[p["이름"]];
+                if (leaderInfo) {
+                    cardStyle = leaderInfo.cardStyle;
+                    nameStyle = leaderInfo.nameStyle;
+                    topDivider = leaderInfo.topDivider;
+                    leaderBadge = leaderInfo.badge;
                 }
+
                 let groupBadge = p["조 편성"] || '미배정';
                 let groupColor = "bg-blue-50 text-blue-600 border border-blue-100";
                 if(groupBadge.includes("회계")) groupColor = "bg-purple-50 text-purple-600 border border-purple-100";
@@ -500,15 +553,17 @@
                 else if(groupBadge.includes("유치부")) groupColor = "bg-pink-50 text-pink-600 border border-pink-100";
                 else if(groupBadge.includes("어린이부")) groupColor = "bg-orange-50 text-orange-600 border border-orange-100";
                 else if(groupBadge.includes("6교구")) groupColor = "bg-emerald-50 text-emerald-600 border border-emerald-100";
+                
                 let payStatus = p["입금확인"] || '미납';
                 let payBadgeColor = "bg-red-100 text-red-700";
                 if(payStatus.includes("완납") || payStatus === "O" || payStatus.includes("확인") || payStatus.includes("완료")) { payStatus = "완납"; payBadgeColor = "bg-green-100 text-green-700"; } else { payStatus = "미납"; }
                 let payBadgeHTML = showExtraInfo ? `<span class="text-xs font-bold px-3 py-1.5 rounded-full ${payBadgeColor} shrink-0">입금: ${payStatus}</span>` : '';
-                // 기도제목 (최신만 보이고, 이전은 접기/펼치기)
+                
                 const prayers = prayerWeeks
                     .slice().sort((a, b) => b.order - a.order)
                     .filter(w => (p[w.key] || "").trim())
                     .map(w => ({ label: w.label, text: (p[w.key] || "").trim() }));
+                    
                 let prayerHTML = '';
                 if(prayers.length > 0) {
                     const latest = prayers[0];
@@ -517,45 +572,64 @@
                     let olderSection = '';
                     if(older.length > 0) {
                         olderSection = `
-                            <div onclick="const el=document.getElementById('${toggleId}');const ar=this.querySelector('.arrow');if(el.style.display==='none'){el.style.display='block';ar.textContent='▾';}else{el.style.display='none';ar.textContent='▸';}" style="cursor:pointer; margin-top:8px; padding-top:6px; border-top:1px solid #c7d2fe; display:flex; align-items:center; gap:4px;">
-                                <span class="arrow" style="font-size:11px; color:#818cf8;">▸</span>
-                                <span style="font-size:12px; font-weight:600; color:#818cf8;">이전 기도제목 (${older.length}건)</span>
+                            <div onclick="const el=document.getElementById('${toggleId}');const ar=this.querySelector('.arrow');if(el.style.display==='none'){el.style.display='block';ar.textContent='▾';}else{el.style.display='none';ar.textContent='▸';}" class="cursor-pointer mt-2 pt-1.5 border-t border-indigo-200 flex items-center gap-1">
+                                <span class="arrow text-[11px] text-indigo-400">▸</span>
+                                <span class="text-xs font-semibold text-indigo-400">이전 기도제목 (${older.length}건)</span>
                             </div>
-                            <div id="${toggleId}" style="display:none; margin-top:6px;">
-                                ${older.map((pr, idx) => `<div style="${idx > 0 ? 'margin-top:6px; padding-top:6px; border-top:1px solid #e0e7ff;' : ''}">
-                                    <span style="font-size:12px; font-weight:700; color:#a5b4fc;">${escapeHtml(pr.label)}</span>
-                                    <div style="font-size:13px; color:#374151; margin-top:2px; white-space:pre-line;">${escapeHtml(pr.text)}</div>
+                            <div id="${toggleId}" class="hidden mt-1.5">
+                                ${older.map((pr, idx) => `<div class="${idx > 0 ? 'mt-1.5 pt-1.5 border-t border-indigo-100' : ''}">
+                                    <span class="text-xs font-bold text-indigo-300">${escapeHtml(pr.label)}</span>
+                                    <span class="text-[13px] text-gray-600 block">${escapeHtml(pr.text)}</span>
                                 </div>`).join('')}
-                            </div>`;
+                            </div>
+                        `;
                     }
-                    prayerHTML = `<div class="mt-2.5 bg-indigo-50 border-l-4 border-indigo-300 rounded-r-lg p-3">
-                        <div class="text-xs font-bold text-indigo-500 mb-1">🙏 기도제목</div>
-                        <div>
-                            <span style="font-size:12px; font-weight:700; color:#6366f1;">${escapeHtml(latest.label)}</span>
-                            <div style="font-size:13px; color:#374151; margin-top:2px; white-space:pre-line;">${escapeHtml(latest.text)}</div>
+                    prayerHTML = `
+                        <div class="mt-3 bg-indigo-50 rounded-lg p-3">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <span class="text-xs font-bold text-indigo-700">🙏 ${escapeHtml(latest.label)} 기도제목</span>
+                            </div>
+                            <p class="text-sm text-gray-700 leading-relaxed">${escapeHtml(latest.text)}</p>
+                            ${olderSection}
                         </div>
-                        ${olderSection}
-                    </div>`;
+                    `;
                 }
-                let bigoHTML = p["비고"] ? `<div class="text-xs text-gray-600 bg-yellow-50 p-2 rounded-lg mt-2 border border-yellow-100">📌 ${p["비고"]}</div>` : '';
+
                 card.className = cardStyle;
                 card.innerHTML = `
-                    <div class="flex justify-between items-start ${topDivider} gap-2">
-                        <div class="flex items-center gap-3 min-w-0">
-                            ${avatarHTML(p)}
-                            <div class="flex items-center flex-wrap gap-1.5 min-w-0">
-                                <span class="${nameStyle}">${p["이름"]}</span>
+                    <div class="flex items-center gap-3 ${topDivider}">
+                        ${avatarHTML(p)}
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center">
+                                <span class="${nameStyle}">${escapeHtml(p["이름"] || '이름 없음')}</span>
                                 ${leaderBadge}
-                                <span class="text-xs font-semibold px-2 py-0.5 rounded-md ${groupColor}">${groupBadge}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+                                <span class="text-xs font-bold px-2 py-0.5 rounded-full ${groupColor}">${escapeHtml(groupBadge)}</span>
+                                ${payBadgeHTML}
                             </div>
                         </div>
-                        ${payBadgeHTML}
                     </div>
                     ${prayerHTML}
-                    ${bigoHTML}`;
+                `;
                 list.appendChild(card);
             });
         }
+
+        // ESC 키 모달 닫기
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                ['infoModal', 'timetableModal', 'lodgingModal', 'danceModal', 'photoLightbox'].forEach(id => {
+                    const m = document.getElementById(id);
+                    if (m && m.classList.contains('flex')) {
+                        m.classList.remove('flex');
+                        m.classList.add('hidden');
+                    }
+                });
+            }
+        });
+
+        // 초기 데이터 로드
         fetchData();
     </script>
 </body>

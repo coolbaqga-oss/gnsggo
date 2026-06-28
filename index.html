@@ -476,7 +476,7 @@
             document.getElementById('total-count').innerText = `총 ${data.length}명`;
             if(data.length === 0) { list.innerHTML = '<p class="text-center text-gray-500 mt-5 bg-white py-8 rounded-lg shadow-sm border border-gray-100">명단이 없습니다.</p>'; return; }
             const showExtraInfo = (currentCategory === '전체');
-            data.forEach(p => {
+            data.forEach((p, pIdx) => {
                 const card = document.createElement('div');
                 let cardStyle = "bg-white p-4 rounded-lg shadow-sm border border-gray-200";
                 let nameStyle = "font-bold text-lg text-gray-800";
@@ -504,19 +504,37 @@
                 let payBadgeColor = "bg-red-100 text-red-700";
                 if(payStatus.includes("완납") || payStatus === "O" || payStatus.includes("확인") || payStatus.includes("완료")) { payStatus = "완납"; payBadgeColor = "bg-green-100 text-green-700"; } else { payStatus = "미납"; }
                 let payBadgeHTML = showExtraInfo ? `<span class="text-xs font-bold px-3 py-1.5 rounded-full ${payBadgeColor} shrink-0">입금: ${payStatus}</span>` : '';
-                // 기도제목 (주차별 누적, 최신 먼저)
+                // 기도제목 (최신만 보이고, 이전은 접기/펼치기)
                 const prayers = prayerWeeks
                     .slice().sort((a, b) => b.order - a.order)
                     .filter(w => (p[w.key] || "").trim())
                     .map(w => ({ label: w.label, text: (p[w.key] || "").trim() }));
                 let prayerHTML = '';
                 if(prayers.length > 0) {
+                    const latest = prayers[0];
+                    const older = prayers.slice(1);
+                    const toggleId = 'pray_' + pIdx;
+                    let olderSection = '';
+                    if(older.length > 0) {
+                        olderSection = `
+                            <div onclick="const el=document.getElementById('${toggleId}');const ar=this.querySelector('.arrow');if(el.style.display==='none'){el.style.display='block';ar.textContent='▾';}else{el.style.display='none';ar.textContent='▸';}" style="cursor:pointer; margin-top:8px; padding-top:6px; border-top:1px solid #c7d2fe; display:flex; align-items:center; gap:4px;">
+                                <span class="arrow" style="font-size:11px; color:#818cf8;">▸</span>
+                                <span style="font-size:12px; font-weight:600; color:#818cf8;">이전 기도제목 (${older.length}건)</span>
+                            </div>
+                            <div id="${toggleId}" style="display:none; margin-top:6px;">
+                                ${older.map((pr, idx) => `<div style="${idx > 0 ? 'margin-top:6px; padding-top:6px; border-top:1px solid #e0e7ff;' : ''}">
+                                    <span style="font-size:12px; font-weight:700; color:#a5b4fc;">${escapeHtml(pr.label)}</span>
+                                    <div style="font-size:13px; color:#374151; margin-top:2px; white-space:pre-line;">${escapeHtml(pr.text)}</div>
+                                </div>`).join('')}
+                            </div>`;
+                    }
                     prayerHTML = `<div class="mt-2.5 bg-indigo-50 border-l-4 border-indigo-300 rounded-r-lg p-3">
-                        <div class="text-xs font-bold text-indigo-500 mb-2">🙏 기도제목</div>
-                        ${prayers.map((pr, idx) => `<div class="${idx > 0 ? 'mt-2 pt-2 border-t border-indigo-100' : ''}">
-                            <span class="text-xs font-bold text-indigo-400">${escapeHtml(pr.label)}</span>
-                            <div class="text-sm text-gray-700 leading-relaxed mt-0.5" style="white-space: pre-line;">${escapeHtml(pr.text)}</div>
-                        </div>`).join('')}
+                        <div class="text-xs font-bold text-indigo-500 mb-1">🙏 기도제목</div>
+                        <div>
+                            <span style="font-size:12px; font-weight:700; color:#6366f1;">${escapeHtml(latest.label)}</span>
+                            <div style="font-size:13px; color:#374151; margin-top:2px; white-space:pre-line;">${escapeHtml(latest.text)}</div>
+                        </div>
+                        ${olderSection}
                     </div>`;
                 }
                 let bigoHTML = p["비고"] ? `<div class="text-xs text-gray-600 bg-yellow-50 p-2 rounded-lg mt-2 border border-yellow-100">📌 ${p["비고"]}</div>` : '';

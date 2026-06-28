@@ -254,13 +254,12 @@
             "강이연": "photos/eyun.png",
             "정경일": "photos/koungil.png",
             "박종훈 전도사": "photos/jonghoon.png",
-            "박은정": "photos/eunjeong.png",
-            "정일균 목사": "photos/ilkyun.png",
-            "구본순 권사": "photos/bonsun.png",
+            "박은정": "photos/eunjeong.png"
         };
 
         let participantsData = [];
         let currentCategory = '전체';
+        let prayerWeeks = [];
 
         function escapeHtml(s) {
             return (s == null ? '' : ('' + s)).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
@@ -412,6 +411,7 @@
             if (headerIndex === -1) { document.getElementById('error-message').innerHTML = "<strong>⚠️ '이름' 열을 찾을 수 없습니다.</strong>"; document.getElementById('error-message').classList.remove('hidden'); return; }
             const headers = rawData[headerIndex];
             let headerMap = {};
+            prayerWeeks = [];
             headers.forEach((h, i) => {
                 if(!h) return; h = h.trim();
                 if(h.includes("이름")) headerMap[i] = "이름";
@@ -420,7 +420,13 @@
                 else if(h.includes("입금") || h.includes("결제") || h.includes("참가비")) headerMap[i] = "입금확인";
                 else if(h.includes("조 편성") || h === "조" || h.includes("부서")) headerMap[i] = "조 편성";
                 else if(h.includes("비고")) headerMap[i] = "비고";
-                else if(h.includes("기도")) headerMap[i] = "기도제목";
+                else if(h.includes("기도")) {
+                    const pKey = "prayer_" + prayerWeeks.length;
+                    headerMap[i] = pKey;
+                    const wm = h.match(/(\d+)/);
+                    const weekNum = wm ? parseInt(wm[1]) : prayerWeeks.length + 1;
+                    prayerWeeks.push({ key: pKey, label: weekNum + "주차", order: weekNum });
+                }
                 else if(h.includes("숙소") || h.includes("방 배정") || h.includes("배정")) headerMap[i] = "숙소";
             });
             participantsData = rawData.slice(headerIndex + 1).map(row => {
@@ -498,8 +504,21 @@
                 let payBadgeColor = "bg-red-100 text-red-700";
                 if(payStatus.includes("완납") || payStatus === "O" || payStatus.includes("확인") || payStatus.includes("완료")) { payStatus = "완납"; payBadgeColor = "bg-green-100 text-green-700"; } else { payStatus = "미납"; }
                 let payBadgeHTML = showExtraInfo ? `<span class="text-xs font-bold px-3 py-1.5 rounded-full ${payBadgeColor} shrink-0">입금: ${payStatus}</span>` : '';
-                let prayerText = (p["기도제목"] || "").trim();
-                let prayerHTML = prayerText ? `<div class="mt-2.5 bg-indigo-50 border-l-4 border-indigo-300 rounded-r-lg p-3"><div class="text-xs font-bold text-indigo-500 mb-1">🙏 기도제목</div><div class="text-sm text-gray-700 leading-relaxed" style="white-space: pre-line;">${escapeHtml(prayerText)}</div></div>` : '';
+                // 기도제목 (주차별 누적, 최신 먼저)
+                const prayers = prayerWeeks
+                    .slice().sort((a, b) => b.order - a.order)
+                    .filter(w => (p[w.key] || "").trim())
+                    .map(w => ({ label: w.label, text: (p[w.key] || "").trim() }));
+                let prayerHTML = '';
+                if(prayers.length > 0) {
+                    prayerHTML = `<div class="mt-2.5 bg-indigo-50 border-l-4 border-indigo-300 rounded-r-lg p-3">
+                        <div class="text-xs font-bold text-indigo-500 mb-2">🙏 기도제목</div>
+                        ${prayers.map((pr, idx) => `<div class="${idx > 0 ? 'mt-2 pt-2 border-t border-indigo-100' : ''}">
+                            <span class="text-xs font-bold text-indigo-400">${escapeHtml(pr.label)}</span>
+                            <div class="text-sm text-gray-700 leading-relaxed mt-0.5" style="white-space: pre-line;">${escapeHtml(pr.text)}</div>
+                        </div>`).join('')}
+                    </div>`;
+                }
                 let bigoHTML = p["비고"] ? `<div class="text-xs text-gray-600 bg-yellow-50 p-2 rounded-lg mt-2 border border-yellow-100">📌 ${p["비고"]}</div>` : '';
                 card.className = cardStyle;
                 card.innerHTML = `
